@@ -280,30 +280,62 @@ let menuOpen = false;
 
 
 const audio = document.getElementById("audio");
-const fill = document.getElementById("fill");
 const menu = document.getElementById("menu");
+const title = document.getElementById("title");
+const artist = document.getElementById("artist");
 const mode = document.getElementById("mode");
 
-let playing = false;
-let menuOpen = false;
+function loadStation(i){
+  stationIndex = (i + stations.length) % stations.length;
+  const s = stations[stationIndex];
 
-audio.src = RADIO_STREAM;
-audio.volume = 1;
+  audio.src = s.stream;
+  title.textContent = s.name;
+  artist.textContent = s.tagline;
+
+  renderMenu();
+
+  if(playing){
+    audio.play().catch(()=>{});
+  }
+}
+
+function renderMenu(){
+  menu.innerHTML = "";
+  stations.forEach((s,i)=>{
+    const div = document.createElement("div");
+    div.className = "item" + (i === stationIndex ? " active" : "");
+    div.textContent = "📻 " + s.name;
+    menu.appendChild(div);
+  });
+}
 
 function togglePlay(){
   if(playing){
     audio.pause();
-    playing=false;
+    playing = false;
   } else {
-    audio.play();
-    playing=true;
+    audio.play().catch(()=>{});
+    playing = true;
   }
 }
 
-menuBtn.onclick = ()=>{
+menuBtn.onclick = () => {
   menuOpen = !menuOpen;
   menu.style.display = menuOpen ? "block" : "none";
-  mode.textContent = menuOpen ? "MENU" : "RADIO";
+  mode.textContent = menuOpen ? "STATIONS" : "RADIO";
+};
+
+nextBtn.onclick = () => {
+  if(menuOpen){
+    loadStation(stationIndex + 1);
+  }
+};
+
+prevBtn.onclick = () => {
+  if(menuOpen){
+    loadStation(stationIndex - 1);
+  }
 };
 
 playBtn.onclick = togglePlay;
