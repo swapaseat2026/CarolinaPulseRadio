@@ -261,90 +261,65 @@ body{
 </head>
 
 <body>
-<!-- ===== FRONT PAGE AUTH GATE ===== -->
+
+<!-- AUTH GATE -->
 <div id="authGate" class="auth-gate">
   <div class="auth-card">
     <h1 class="auth-title">2BANGUZHQ</h1>
     <p class="auth-sub">Official Music Platform</p>
-
-  <body>
-
-<!-- ===== FRONT PAGE AUTH GATE ===== -->
-<div id="authGate" class="auth-gate">
-  <div class="auth-card">
-    <h1 class="auth-title">2BANGUZHQ</h1>
-    <p class="auth-sub">Official Music Platform</p>
-
-    <input type="email" placeholder="Email" class="auth-input">
-    <input type="password" placeholder="Password" class="auth-input">
-
-    <button class="auth-btn primary">Sign Up</button>
-    <button class="auth-btn">Log In</button>
-
-    <div class="divider">or</div>
-
-    <button class="auth-btn ghost" id="guestBtn">
-      Enter as Guest
-    </button>
   </div>
 </div>
 
-<!-- ===== IPOD PLAYER (ALREADY EXISTS BELOW) ===== -->
-<div class="stage">
-  <div class="ipod">
-    <div class="shell">
-      <!-- rest of your iPod code -->
-
-  </div>
-</div>
-  
+<!-- IPOD PLAYER -->
 <div class="stage">
 <div class="ipod">
 <div class="shell">
 
-<div class="screen">
-  <div class="status">
-    <span>2BANGUZHQ</span>
-    <span>🎧</span>
-  </div>
+  <div class="screen">
+    <div class="status">
+      <span>2BANGUZHQ</span>
+      <span>🎧</span>
+    </div>
 
-  <div class="brand">OFFICIAL MUSIC PLAYER</div>
+    <div class="brand">OFFICIAL MUSIC PLAYER</div>
 
-  <div class="menu" id="menu">
-    <div class="item active">My Music</div>
-    <div class="item">Upload</div>
-    <div class="item">Merch</div>
-    <div class="item">Account</div>
-  </div>
+    <div class="menu" id="menu">
+      <div class="item active">My Music</div>
+      <div class="item">Upload</div>
+      <div class="item">Merch</div>
+      <div class="item">Account</div>
+    </div>
 
-  <div class="now">
-    <div class="art"></div>
-    <div class="meta">
-      <div class="title" id="title">No Track Playing</div>
-      <div class="artist" id="artist">Upload your music</div>
+    <div class="now">
+      <div class="art"></div>
+      <div class="meta">
+        <div class="title" id="title">No Track Playing</div>
+        <div class="artist" id="artist">Upload your music</div>
+      </div>
+    </div>
+
+    <div class="progress">
+      <div class="bar"><div class="fill" id="fill"></div></div>
     </div>
   </div>
 
-  <div class="progress">
-    <div class="bar"><div class="fill" id="fill"></div></div>
+  <div class="wheel-area">
+    <div class="wheel">
+      <div class="btn menu-btn" id="menuBtn">MENU</div>
+      <div class="btn prev" id="prevBtn">⏮</div>
+      <div class="btn next" id="nextBtn">⏭</div>
+      <div class="btn play" id="playBtn">▶</div>
+      <div class="center" id="centerBtn">OK</div>
+    </div>
   </div>
-</div>
-
-<div class="wheel-area">
-  <div class="wheel">
-    <div class="btn menu-btn" id="menuBtn">MENU</div>
-    <div class="btn prev" id="prevBtn">⏮</div>
-    <div class="btn next" id="nextBtn">⏭</div>
-    <div class="btn play" id="playBtn">▶</div>
-    <div class="center" id="centerBtn">OK</div>
-  </div>
-</div>
 
 </div>
 </div>
 </div>
 
 <audio id="audio"></audio>
+
+</body>
 
 <script>
 /* ===== TRACKS ===== */
