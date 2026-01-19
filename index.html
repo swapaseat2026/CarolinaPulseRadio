@@ -292,13 +292,32 @@ let playing = false;
 let menuOpen = false;
 
 /* ===== CORE FUNCTIONS ===== */
-function loadStation(i){
+function updateMediaSession(title, artist){
+  if ("mediaSession" in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: title,
+      artist: artist,
+      album: "Carolina Pulse Radio",
+      artwork: [
+        {
+          src: "logo.png",
+          sizes: "512x512",
+          type: "image/png"
+        }
+      ]
+    });
+  }
+}
+
+  function loadStation(i){
   stationIndex = (i + stations.length) % stations.length;
   const s = stations[stationIndex];
 
   audio.src = s.stream;
   titleEl.textContent = s.name;
   artistEl.textContent = s.tagline;
+
+  updateMediaSession(s.name, s.tagline);
 
   renderMenu();
 
