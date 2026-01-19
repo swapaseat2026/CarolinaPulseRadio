@@ -87,13 +87,21 @@ body{
   font-weight:800;
   letter-spacing:1px;
 }
-  <div class="menu" id="menu" style="display:none">
-  <div class="item active">My Music</div>
-  <div class="item">Upload</div>
-  <div class="item">Merch</div>
-  <div class="item">Account</div>
-</div>
-  
+
+/* ===== MENU ===== */
+.menu{
+  display:none;
+  margin-top:8px;
+}
+.item{
+  font-size:12px;
+  padding:6px;
+  border-bottom:1px solid rgba(57,255,20,.15);
+}
+.item.active{
+  background:rgba(57,255,20,.18);
+}
+
 .now{
   display:flex;
   gap:12px;
@@ -177,12 +185,7 @@ body{
 .prev{left:10px;top:50%;transform:translateY(-50%)}
 .next{right:10px;top:50%;transform:translateY(-50%)}
 .play{bottom:10px;left:50%;transform:translateX(-50%)}
-.menu-btn{
-  top:10px;
-  left:50%;
-  transform:translateX(-50%);
-}
-
+.menu-btn{top:10px;left:50%;transform:translateX(-50%)}
 </style>
 </head>
 
@@ -199,6 +202,13 @@ body{
   </div>
 
   <div class="brand">OFFICIAL MUSIC PLAYER</div>
+
+  <div class="menu" id="menu">
+    <div class="item active">My Music</div>
+    <div class="item">Upload</div>
+    <div class="item">Merch</div>
+    <div class="item">Account</div>
+  </div>
 
   <div class="now">
     <div class="art"></div>
@@ -230,32 +240,27 @@ body{
 <audio id="audio"></audio>
 
 <script>
-/* ===== YOUR MUSIC (TEMP ARRAY → FIREBASE LATER) ===== */
+/* ===== TRACKS ===== */
 const tracks = [
-  {
-    title: "My First Track",
-    artist: "2BANGUZ",
-    src: "music/song1.mp3"
-  },
-  {
-    title: "Second Track",
-    artist: "2BANGUZ",
-    src: "music/song2.mp3"
-  }
+  { title:"My First Track", artist:"2BANGUZ", src:"music/song1.mp3" },
+  { title:"Second Track", artist:"2BANGUZ", src:"music/song2.mp3" }
 ];
 
 let index = 0;
 let playing = false;
+let menuOpen = false;
 
 const audio = document.getElementById("audio");
 const titleEl = document.getElementById("title");
 const artistEl = document.getElementById("artist");
 const fill = document.getElementById("fill");
+const menu = document.getElementById("menu");
 
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const playBtn = document.getElementById("playBtn");
 const centerBtn = document.getElementById("centerBtn");
+const menuBtn = document.getElementById("menuBtn");
 
 function loadTrack(i){
   index = (i + tracks.length) % tracks.length;
@@ -264,5 +269,36 @@ function loadTrack(i){
   artistEl.textContent = tracks[index].artist;
 }
 
-function to
+function togglePlay(){
+  if(playing){
+    audio.pause();
+    playing = false;
+  } else {
+    audio.play().catch(()=>{});
+    playing = true;
+  }
+}
 
+audio.addEventListener("timeupdate", ()=>{
+  if(audio.duration){
+    fill.style.width = (audio.currentTime / audio.duration) * 100 + "%";
+  }
+});
+
+/* BUTTONS */
+prevBtn.onclick = () => loadTrack(index - 1);
+nextBtn.onclick = () => loadTrack(index + 1);
+playBtn.onclick = togglePlay;
+centerBtn.onclick = togglePlay;
+
+menuBtn.onclick = () => {
+  menuOpen = !menuOpen;
+  menu.style.display = menuOpen ? "block" : "none";
+};
+
+/* INIT */
+loadTrack(0);
+</script>
+
+</body>
+</html>
