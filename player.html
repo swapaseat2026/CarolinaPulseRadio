@@ -243,10 +243,8 @@ body{
 <audio id="audio"></audio>
 
 <script>
-const tracks = [
-  { title:"My First Track", artist:"2BANGUZ", src:"music/song1.mp3" },
-  { title:"Second Track", artist:"2BANGUZ", src:"music/song2.mp3" }
-];
+
+const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
 
 let index = 0;
 let playing = false;
