@@ -87,7 +87,13 @@ body{
   font-weight:800;
   letter-spacing:1px;
 }
-
+  <div class="menu" id="menu" style="display:none">
+  <div class="item active">My Music</div>
+  <div class="item">Upload</div>
+  <div class="item">Merch</div>
+  <div class="item">Account</div>
+</div>
+  
 .now{
   display:flex;
   gap:12px;
@@ -171,6 +177,12 @@ body{
 .prev{left:10px;top:50%;transform:translateY(-50%)}
 .next{right:10px;top:50%;transform:translateY(-50%)}
 .play{bottom:10px;left:50%;transform:translateX(-50%)}
+.menu-btn{
+  top:10px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
 </style>
 </head>
 
@@ -203,6 +215,7 @@ body{
 
 <div class="wheel-area">
   <div class="wheel">
+    <div class="btn menu-btn" id="menuBtn">MENU</div>
     <div class="btn prev" id="prevBtn">⏮</div>
     <div class="btn next" id="nextBtn">⏭</div>
     <div class="btn play" id="playBtn">▶</div>
