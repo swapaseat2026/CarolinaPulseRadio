@@ -206,7 +206,7 @@ body{
 
   <div class="brand">OFFICIAL MUSIC PLAYER</div>
 
- <div class="menu" id="menu">
+ <div class="btn menu-btn" id="menuBtn">MENU</div>
   <div class="item active" data-action="music">My Music</div>
   <div class="item" data-action="upload">Upload</div>
   <div class="item" data-action="merch">Merch</div>
@@ -243,95 +243,98 @@ body{
 <audio id="audio"></audio>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
 
-const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
+  /* ===== ELEMENTS ===== */
+  const menu = document.getElementById("menu");
+  const menuBtn = document.getElementById("menuBtn");
 
-  console.log("Tracks loaded:", tracks);
-if (tracks.length === 0) {
-  titleEl.textContent = "No tracks uploaded";
-  artistEl.textContent = "Go to Upload";
-}
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const playBtn = document.getElementById("playBtn");
+  const centerBtn = document.getElementById("centerBtn");
 
-let index = 0;
-let playing = false;
-let menuOpen = false;
+  const audio = document.getElementById("audio");
+  const titleEl = document.getElementById("title");
+  const artistEl = document.getElementById("artist");
+  const fill = document.getElementById("fill");
 
-const audio = document.getElementById("audio");
-const titleEl = document.getElementById("title");
-const artistEl = document.getElementById("artist");
-const fill = document.getElementById("fill");
-const menu = document.getElementById("menu");
+  let menuOpen = false;
+  let index = 0;
+  let playing = false;
 
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const playBtn = document.getElementById("playBtn");
-const centerBtn = document.getElementById("centerBtn");
-const menuBtn = document.getElementById("menuBtn");
+  /* ===== TRACKS ===== */
+  const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
 
-function loadTrack(i){
-  index = (i + tracks.length) % tracks.length;
-  audio.src = tracks[index].src;
-  titleEl.textContent = tracks[index].title;
-  artistEl.textContent = tracks[index].artist;
-}
-
-function togglePlay(){
-  if (tracks.length === 0) return;
-
-  if (audio.paused) {
-    audio.play().catch(()=>{});
-    playing = true;
-  } else {
-    audio.pause();
-    playing = false;
+  if (tracks.length === 0) {
+    titleEl.textContent = "No tracks uploaded";
+    artistEl.textContent = "Go to Upload";
   }
-}
-audio.addEventListener("ended", () => {
-  loadTrack(index + 1);
-  audio.play().catch(()=>{});
+
+  function loadTrack(i){
+    if (tracks.length === 0) return;
+    index = (i + tracks.length) % tracks.length;
+    audio.src = tracks[index].src;
+    titleEl.textContent = tracks[index].title;
+    artistEl.textContent = tracks[index].artist;
+  }
+
+  function togglePlay(){
+    if (tracks.length === 0) return;
+
+    if (audio.paused) {
+      audio.play().catch(()=>{});
+      playing = true;
+    } else {
+      audio.pause();
+      playing = false;
+    }
+  }
+
+  /* ===== MENU TOGGLE (THIS IS THE FIX) ===== */
+  menuBtn.addEventListener("click", () => {
+    menuOpen = !menuOpen;
+    menu.style.display = menuOpen ? "block" : "none";
+  });
+
+  /* ===== MENU ITEM ACTIONS ===== */
+  document.querySelectorAll(".menu .item").forEach(item => {
+    item.addEventListener("click", () => {
+      const action = item.dataset.action;
+
+      if (action === "upload") {
+        window.location.href = "upload.html";
+      }
+
+      if (action === "music") {
+        menu.style.display = "none";
+        menuOpen = false;
+      }
+
+      if (action === "merch") {
+        alert("Merch coming soon");
+      }
+
+      if (action === "account") {
+        alert("Account coming soon");
+      }
+    });
+  });
+
+  /* ===== BUTTONS ===== */
+  prevBtn.onclick = () => loadTrack(index - 1);
+  nextBtn.onclick = () => loadTrack(index + 1);
+  playBtn.onclick = togglePlay;
+  centerBtn.onclick = togglePlay;
+
+  audio.addEventListener("ended", () => {
+    loadTrack(index + 1);
+    audio.play().catch(()=>{});
+  });
+
+  loadTrack(0);
+
 });
-
-prevBtn.onclick = () => loadTrack(index - 1);
-nextBtn.onclick = () => loadTrack(index + 1);
-playBtn.onclick = togglePlay;
-centerBtn.onclick = togglePlay;
-
-menuBtn.onclick = () => {
-  menuOpen = !menuOpen;
-  menu.style.display = menuOpen ? "block" : "none";
-};
-document.querySelectorAll(".menu .item").forEach(item => {
-  item.onclick = () => {
-    const action = item.dataset.action;
-
-    if (action === "upload") {
-      window.location.href = "upload.html";
-    }
-
-    if (action === "merch") {
-      alert("Merch coming soon");
-    }
-
-    if (action === "account") {
-      alert("Account coming soon");
-    }
-
-    if (action === "music") {
-      menu.style.display = "none";
-      menuOpen = false;
-    }
-  };
-});
-
-function loadTrack(i){
-  if (tracks.length === 0) return;
-
-  index = (i + tracks.length) % tracks.length;
-  audio.src = tracks[index].src;
-  titleEl.textContent = tracks[index].title;
-  artistEl.textContent = tracks[index].artist;
-}
-
 </script>
 
 </body>
