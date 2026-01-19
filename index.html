@@ -254,6 +254,41 @@ body{
 <audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
+/* ===== METADATA HANDLING ===== */
+const titleEl = document.getElementById("title");
+const artistEl = document.getElementById("artist");
+
+audio.addEventListener("loadedmetadata", () => {
+  // Some streams expose basic info here
+  console.log("Metadata loaded");
+});
+
+audio.addEventListener("playing", () => {
+  titleEl.textContent = stations[stationIndex].name;
+  artistEl.textContent = stations[stationIndex].tagline;
+});
+
+/* Attempt to read ICY metadata (if supported by stream) */
+audio.addEventListener("timeupdate", () => {
+  // Browser-native streams usually update via Media Session
+  if (navigator.mediaSession && navigator.mediaSession.metadata) {
+    const meta = navigator.mediaSession.metadata;
+
+    if (meta.title) titleEl.textContent = meta.title;
+    if (meta.artist) artistEl.textContent = meta.artist;
+  }
+});
+if ("mediaSession" in navigator) {
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: "Carolina Pulse",
+    artist: "The Heartbeat of the Carolinas",
+    album: "Live Radio",
+    artwork: [
+      { src: "logo.png", sizes: "512x512", type: "image/png" }
+    ]
+  });
+}
+
 /* ===== CAROLINA PULSE STATIONS ===== */
 const stations = [
   {
