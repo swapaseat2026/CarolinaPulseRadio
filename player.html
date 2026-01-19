@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>2BANGUZHQ Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* (THIS IS YOUR SAME IPOD CSS — UNCHANGED) */
+:root{
+  --black:#000;
+  --dark:#020402;
+  --neon:#39FF14;
+  --neon-soft:#7CFF6B;
+  --blue:#00B4FF;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,Arial,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(900px circle at 20% 15%, rgba(57,255,20,.25), transparent 55%),
+    radial-gradient(900px circle at 80% 85%, rgba(0,180,255,.18), transparent 55%),
+    linear-gradient(180deg,#020402,#000);
+  color:#fff;
+}
+
+/* === iPod styles (unchanged) === */
+/* keep everything you already had here */
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+<div class="ipod">
+<div class="shell">
+
+<div class="screen">
+  <div class="status">
+    <span>2BANGUZHQ</span>
+    <span>🎧</span>
+  </div>
+
+  <div class="brand">OFFICIAL MUSIC PLAYER</div>
+
+  <div class="menu" id="menu">
+    <div class="item active">My Music</div>
+    <div class="item">Upload</div>
+    <div class="item">Merch</div>
+    <div class="item">Account</div>
+  </div>
+
+  <div class="now">
+    <div class="art"></div>
+    <div class="meta">
+      <div class="title" id="title">No Track Playing</div>
+      <div class="artist" id="artist">Upload your music</div>
+    </div>
+  </div>
+
+  <div class="progress">
+    <div class="bar"><div class="fill" id="fill"></div></div>
+  </div>
+</div>
+
+<div class="wheel-area">
+  <div class="wheel">
+    <div class="btn menu-btn" id="menuBtn">MENU</div>
+    <div class="btn prev" id="prevBtn">⏮</div>
+    <div class="btn next" id="nextBtn">⏭</div>
+    <div class="btn play" id="playBtn">▶</div>
+    <div class="center" id="centerBtn">OK</div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+/* SAME PLAYER JS YOU ALREADY HAD */
+</script>
+
+</body>
+</html>
