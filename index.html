@@ -258,9 +258,30 @@ body{
 <audio id="audio" crossorigin="anonymous"></audio>
 
 <script>
-/* ===== RADIO STREAM ===== */
-/* Replace this URL with your REAL radio stream */
-const RADIO_STREAM = "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one";
+/* ===== CAROLINA PULSE STATIONS ===== */
+const stations = [
+  {
+    name: "Carolina Pulse",
+    tagline: "The Heartbeat of the Carolinas",
+    stream: "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one"
+  },
+  {
+    name: "Pulse Hip-Hop",
+    tagline: "Carolina Hip-Hop & Trap",
+    stream: "https://icecast.omroep.nl/3fm-bb-mp3"
+  },
+  {
+    name: "Pulse R&B",
+    tagline: "Smooth R&B & Soul",
+    stream: "https://icecast.omroep.nl/radio2-bb-mp3"
+  }
+];
+
+let stationIndex = 0;
+let playing = false;
+let menuOpen = false;
+
+
 
 const audio = document.getElementById("audio");
 const fill = document.getElementById("fill");
