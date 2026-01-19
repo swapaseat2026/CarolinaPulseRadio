@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Carolina Pulse Radio</title>
+<title>2BANGUZHQ</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -103,17 +103,9 @@ body{
   box-shadow:0 0 25px rgba(57,255,20,.7);
 }
 
-.meta{
-  flex:1;
-}
-.title{
-  font-weight:800;
-  color:var(--neon);
-}
-.artist{
-  font-size:12px;
-  opacity:.8;
-}
+.meta{ flex:1; }
+.title{ font-weight:800; color:var(--neon); }
+.artist{ font-size:12px; opacity:.8; }
 
 .progress{
   margin-top:auto;
@@ -130,27 +122,6 @@ body{
   width:0%;
   background:linear-gradient(90deg,var(--neon),var(--neon-soft));
   box-shadow:0 0 20px rgba(57,255,20,.9);
-}
-.time{
-  display:flex;
-  justify-content:space-between;
-  font-size:11px;
-  color:var(--blue);
-  margin-top:4px;
-}
-
-/* ===== MENU ===== */
-.menu{
-  display:none;
-  margin-top:8px;
-}
-.item{
-  font-size:12px;
-  padding:6px;
-  border-bottom:1px solid rgba(57,255,20,.15);
-}
-.item.active{
-  background:rgba(57,255,20,.18);
 }
 
 /* ===== CLICK WHEEL ===== */
@@ -197,7 +168,6 @@ body{
   color:var(--neon);
   font-weight:900;
 }
-.menu-btn{top:10px;left:50%;transform:translateX(-50%)}
 .prev{left:10px;top:50%;transform:translateY(-50%)}
 .next{right:10px;top:50%;transform:translateY(-50%)}
 .play{bottom:10px;left:50%;transform:translateX(-50%)}
@@ -212,34 +182,27 @@ body{
 
 <div class="screen">
   <div class="status">
-    <span id="mode">RADIO</span>
-    <span>🔋100%</span>
+    <span>2BANGUZHQ</span>
+    <span>🎧</span>
   </div>
 
-  <div class="brand">CAROLINA PULSE</div>
+  <div class="brand">OFFICIAL MUSIC PLAYER</div>
 
   <div class="now">
     <div class="art"></div>
     <div class="meta">
-      <div class="title" id="title">Live Broadcast</div>
-      <div class="artist" id="artist">The Heartbeat of the Carolinas</div>
+      <div class="title" id="title">No Track Playing</div>
+      <div class="artist" id="artist">Upload your music</div>
     </div>
   </div>
 
   <div class="progress">
     <div class="bar"><div class="fill" id="fill"></div></div>
-    <div class="time">
-      <span id="cur">LIVE</span>
-      <span id="dur">ON AIR</span>
-    </div>
   </div>
-
- <div class="menu" id="menu"></div>
 </div>
 
 <div class="wheel-area">
   <div class="wheel">
-    <div class="btn menu-btn" id="menuBtn">MENU</div>
     <div class="btn prev" id="prevBtn">⏮</div>
     <div class="btn next" id="nextBtn">⏭</div>
     <div class="btn play" id="playBtn">▶</div>
@@ -251,135 +214,42 @@ body{
 </div>
 </div>
 
-<audio id="audio" crossorigin="anonymous"></audio>
+<audio id="audio"></audio>
 
 <script>
-/* ===== ELEMENTS ===== */
-const audio = document.getElementById("audio");
-const menu = document.getElementById("menu");
-const titleEl = document.getElementById("title");
-const artistEl = document.getElementById("artist");
-const mode = document.getElementById("mode");
-const fill = document.getElementById("fill");
-
-const menuBtn = document.getElementById("menuBtn");
-const nextBtn = document.getElementById("nextBtn");
-const prevBtn = document.getElementById("prevBtn");
-const playBtn = document.getElementById("playBtn");
-const centerBtn = document.getElementById("centerBtn");
-
-/* ===== STATIONS ===== */
-const stations = [
+/* ===== YOUR MUSIC (TEMP ARRAY → FIREBASE LATER) ===== */
+const tracks = [
   {
-    name: "Carolina Pulse",
-    tagline: "The Heartbeat of the Carolinas",
-    stream: "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one"
+    title: "My First Track",
+    artist: "2BANGUZ",
+    src: "music/song1.mp3"
   },
   {
-    name: "Pulse Hip-Hop",
-    tagline: "Carolina Hip-Hop & Trap",
-    stream: "https://icecast.omroep.nl/3fm-bb-mp3"
-  },
-  {
-    name: "Pulse R&B",
-    tagline: "Smooth R&B & Soul",
-    stream: "https://icecast.omroep.nl/radio2-bb-mp3"
+    title: "Second Track",
+    artist: "2BANGUZ",
+    src: "music/song2.mp3"
   }
 ];
 
-let stationIndex = 0;
+let index = 0;
 let playing = false;
-let menuOpen = false;
 
-/* ===== CORE FUNCTIONS ===== */
-function updateMediaSession(title, artist){
-  if ("mediaSession" in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: title,
-      artist: artist,
-      album: "Carolina Pulse Radio",
-      artwork: [
-        {
-          src: "logo.png",
-          sizes: "512x512",
-          type: "image/png"
-        }
-      ]
-    });
-  }
+const audio = document.getElementById("audio");
+const titleEl = document.getElementById("title");
+const artistEl = document.getElementById("artist");
+const fill = document.getElementById("fill");
+
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const playBtn = document.getElementById("playBtn");
+const centerBtn = document.getElementById("centerBtn");
+
+function loadTrack(i){
+  index = (i + tracks.length) % tracks.length;
+  audio.src = tracks[index].src;
+  titleEl.textContent = tracks[index].title;
+  artistEl.textContent = tracks[index].artist;
 }
 
-  function loadStation(i){
-  stationIndex = (i + stations.length) % stations.length;
-  const s = stations[stationIndex];
+function to
 
-  audio.src = s.stream;
-  titleEl.textContent = s.name;
-  artistEl.textContent = s.tagline;
-
-  updateMediaSession(s.name, s.tagline);
-
-  renderMenu();
-
-  if (playing) audio.play().catch(()=>{});
-}
-
-function renderMenu(){
-  menu.innerHTML = "";
-  stations.forEach((s,i)=>{
-    const div = document.createElement("div");
-    div.className = "item" + (i === stationIndex ? " active" : "");
-    div.textContent = "📻 " + s.name;
-    menu.appendChild(div);
-  });
-}
-
-function togglePlay(){
-  if(playing){
-    audio.pause();
-    playing = false;
-  } else {
-    audio.play().catch(()=>{});
-    playing = true;
-  }
-}
-
-/* ===== BUTTONS ===== */
-menuBtn.onclick = () => {
-  menuOpen = !menuOpen;
-  menu.style.display = menuOpen ? "block" : "none";
-  mode.textContent = menuOpen ? "STATIONS" : "RADIO";
-};
-
-nextBtn.onclick = () => {
-  if(menuOpen) loadStation(stationIndex + 1);
-};
-
-prevBtn.onclick = () => {
-  if(menuOpen) loadStation(stationIndex - 1);
-};
-
-playBtn.onclick = togglePlay;
-centerBtn.onclick = togglePlay;
-
-/* ===== METADATA (SAFE) ===== */
-audio.addEventListener("playing", () => {
-  titleEl.textContent = stations[stationIndex].name;
-  artistEl.textContent = stations[stationIndex].tagline;
-});
-
-/* ===== RADIO PULSE ANIMATION ===== */
-let p = 0;
-setInterval(()=>{
-  if(playing){
-    p = (p + 4) % 100;
-    fill.style.width = p + "%";
-  }
-},120);
-
-/* ===== INIT ===== */
-loadStation(0);
-</script>
-
-</body>
-</html>
