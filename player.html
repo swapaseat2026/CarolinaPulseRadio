@@ -216,7 +216,7 @@ body{
   <div class="now">
     <div class="art"></div>
     <div class="meta">
-      <div class="title" id="title">No Track Playing</div>
+      <div class="title" id="title">Upload a song to begin</div>
       <div class="artist" id="artist">Upload your music</div>
     </div>
   </div>
@@ -246,6 +246,12 @@ body{
 
 const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
 
+  console.log("Tracks loaded:", tracks);
+if (tracks.length === 0) {
+  titleEl.textContent = "No tracks uploaded";
+  artistEl.textContent = "Go to Upload";
+}
+
 let index = 0;
 let playing = false;
 let menuOpen = false;
@@ -270,19 +276,19 @@ function loadTrack(i){
 }
 
 function togglePlay(){
-  if(playing){
-    audio.pause();
-    playing = false;
-  } else {
+  if (tracks.length === 0) return;
+
+  if (audio.paused) {
     audio.play().catch(()=>{});
     playing = true;
+  } else {
+    audio.pause();
+    playing = false;
   }
 }
-
-audio.addEventListener("timeupdate", ()=>{
-  if(audio.duration){
-    fill.style.width = (audio.currentTime / audio.duration) * 100 + "%";
-  }
+audio.addEventListener("ended", () => {
+  loadTrack(index + 1);
+  audio.play().catch(()=>{});
 });
 
 prevBtn.onclick = () => loadTrack(index - 1);
@@ -295,7 +301,15 @@ menuBtn.onclick = () => {
   menu.style.display = menuOpen ? "block" : "none";
 };
 
-loadTrack(0);
+function loadTrack(i){
+  if (tracks.length === 0) return;
+
+  index = (i + tracks.length) % tracks.length;
+  audio.src = tracks[index].src;
+  titleEl.textContent = tracks[index].title;
+  artistEl.textContent = tracks[index].artist;
+}
+
 </script>
 
 </body>
