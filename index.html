@@ -378,7 +378,13 @@ menuBtn.onclick = () => {
   menu.style.display = menuOpen ? "block" : "none";
 };
 
-/* INIT */
+const authGate = document.getElementById("authGate");
+
+/* TEMP: auto-enter as guest so iPod shows */
+setTimeout(() => {
+  authGate.style.display = "none";
+}, 500);
+
 loadTrack(0);
 </script>
 
