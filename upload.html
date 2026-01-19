@@ -1,1 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Upload Music | 2BANGUZHQ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<style>
+:root{
+  --black:#000;
+  --dark:#020402;
+  --neon:#39FF14;
+  --blue:#00B4FF;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,Arial,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(800px circle at 20% 20%, rgba(57,255,20,.25), transparent 55%),
+    linear-gradient(180deg,#020402,#000);
+  color:#fff;
+}
+
+.card{
+  width:340px;
+  padding:24px;
+  border-radius:22px;
+  background:linear-gradient(180deg,#0a120a,#020402);
+  border:1px solid rgba(57,255,20,.35);
+  box-shadow:0 0 40px rgba(57,255,20,.35);
+}
+
+h1{
+  text-align:center;
+  color:var(--blue);
+  margin-bottom:6px;
+}
+
+p{
+  text-align:center;
+  font-size:12px;
+  opacity:.7;
+  margin-bottom:18px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:10px;
+  border:1px solid rgba(57,255,20,.3);
+  background:#020402;
+  color:#fff;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  font-weight:800;
+  background:linear-gradient(180deg,var(--neon),#0a120a);
+  color:#000;
+}
+
+.back{
+  margin-top:10px;
+  background:#020402;
+  color:var(--neon);
+  border:1px solid rgba(57,255,20,.35);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>Upload Music</h1>
+  <p>Add your track to 2BANGUZHQ</p>
+
+  <input type="text" id="title" placeholder="Song Title">
+  <input type="text" id="artist" placeholder="Artist Name">
+  <input type="file" id="file" accept="audio/*">
+
+  <button onclick="saveTrack()">Save Track</button>
+  <button class="back" onclick="goBack()">Back to Player</button>
+</div>
+
+<script>
+function saveTrack(){
+  const title = document.getElementById("title").value;
+  const artist = document.getElementById("artist").value;
+  const fileInput = document.getElementById("file");
+
+  if(!title || !artist || !fileInput.files.length){
+    alert("Please fill out all fields.");
+    return;
+  }
+
+  const track = {
+    title,
+    artist,
+    src: URL.createObjectURL(fileInput.files[0])
+  };
+
+  let tracks = JSON.parse(localStorage.getItem("tracks")) || [];
+  tracks.push(track);
+  localStorage.setItem("tracks", JSON.stringify(tracks));
+
+  window.location.href = "player.html";
+}
+
+function goBack(){
+  window.location.href = "player.html";
+}
+</script>
+
+</body>
+</html>
