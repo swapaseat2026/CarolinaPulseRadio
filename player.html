@@ -206,11 +206,10 @@ body{
 
   <div class="brand">OFFICIAL MUSIC PLAYER</div>
 
- <div class="btn menu-btn" id="menuBtn">MENU</div>
-  <div class="item active" data-action="music">My Music</div>
-  <div class="item" data-action="upload">Upload</div>
-  <div class="item" data-action="merch">Merch</div>
-  <div class="item" data-action="account">Account</div>
+<!-- MENU LIST (SCREEN) -->
+<div class="menu" id="menu">
+  <div class="item" onclick="goUpload()">Upload</div>
+  <div class="item" onclick="goMusic()">My Music</div>
 </div>
 
   <div class="now">
@@ -228,6 +227,7 @@ body{
 
 <div class="wheel-area">
   <div class="wheel">
+  
     <div class="btn menu-btn" id="menuBtn">MENU</div>
     <div class="btn prev" id="prevBtn">⏮</div>
     <div class="btn next" id="nextBtn">⏭</div>
@@ -291,35 +291,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  /* ===== MENU TOGGLE (THIS IS THE FIX) ===== */
   menuBtn.addEventListener("click", () => {
     menuOpen = !menuOpen;
     menu.style.display = menuOpen ? "block" : "none";
   });
+  // MENU ACTIONS
+window.goUpload = () => {
+  window.location.href = "upload.html";
+};
 
-  /* ===== MENU ITEM ACTIONS ===== */
-  document.querySelectorAll(".menu .item").forEach(item => {
-    item.addEventListener("click", () => {
-      const action = item.dataset.action;
-
-      if (action === "upload") {
-        window.location.href = "upload.html";
-      }
-
-      if (action === "music") {
-        menu.style.display = "none";
-        menuOpen = false;
-      }
-
-      if (action === "merch") {
-        alert("Merch coming soon");
-      }
-
-      if (action === "account") {
-        alert("Account coming soon");
-      }
-    });
-  });
+window.goMusic = () => {
+  menu.style.display = "none";
+  menuOpen = false;
+};
 
   /* ===== BUTTONS ===== */
   prevBtn.onclick = () => loadTrack(index - 1);
