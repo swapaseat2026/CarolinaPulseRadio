@@ -107,12 +107,6 @@ function saveTrack(){
 
   const file = fileInput.files[0];
 
-  // 🚨 TEMP SAFETY LIMIT (REQUIRED)
-  if (file.size > 1024 * 1024) {
-    alert("File too large. Use a small test audio (under 1MB).");
-    return;
-  }
-
   const reader = new FileReader();
 
   reader.onload = () => {
