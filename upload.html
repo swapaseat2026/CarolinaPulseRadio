@@ -20,20 +20,31 @@
 function saveTrack(){
   const title = document.getElementById("title").value;
   const artist = document.getElementById("artist").value;
-  const file = document.getElementById("file").files[0];
+  const fileInput = document.getElementById("file");
+  const file = fileInput.files[0];
 
   if(!title || !artist || !file){
     alert("Fill everything");
     return;
   }
 
-  const url = URL.createObjectURL(file);
+  const reader = new FileReader();
 
-  const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-  tracks.push({ title, artist, src: url });
+  reader.onload = function(){
+    const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
+    tracks.push({
+      title: title,
+      artist: artist,
+      src: reader.result   // ✅ BASE64 AUDIO (PERSISTS)
+    });
 
-  localStorage.setItem("tracks", JSON.stringify(tracks));
-  window.location.href = "player.html";
+    localStorage.setItem("tracks", JSON.stringify(tracks));
+
+    // 👉 GO BACK TO PLAYER
+    window.location.href = "player.html";
+  };
+
+  reader.readAsDataURL(file); // 🔑 REQUIRED
 }
 </script>
 
