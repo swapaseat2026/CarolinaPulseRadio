@@ -306,12 +306,12 @@ function renderSongList(){
     artistEl.textContent = "Go to Upload";
   }
 
-  function loadTrack(i){
+function loadTrack(i){
   if (tracks.length === 0) return;
 
   index = (i + tracks.length) % tracks.length;
   audio.src = tracks[index].src;
-  audio.load(); 
+  audio.load();
 
   titleEl.textContent = tracks[index].title;
   artistEl.textContent = tracks[index].artist;
@@ -360,6 +360,13 @@ window.goMusic = () => {
   });
 
   loadTrack(0);
+playBtn.onclick = () => {
+  audio.play().catch(err => console.log("Play blocked:", err));
+};
+
+centerBtn.onclick = () => {
+  audio.play().catch(err => console.log("Play blocked:", err));
+};
 
 });
 </script>
