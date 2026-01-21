@@ -307,12 +307,19 @@ function renderSongList(){
   }
 
   function loadTrack(i){
-    if (tracks.length === 0) return;
-    index = (i + tracks.length) % tracks.length;
-    audio.src = tracks[index].src;
-    titleEl.textContent = tracks[index].title;
-    artistEl.textContent = tracks[index].artist;
-  }
+  if (tracks.length === 0) return;
+
+  index = (i + tracks.length) % tracks.length;
+
+  audio.src = tracks[index].src;
+  audio.load();                 // 🔴 THIS WAS MISSING
+  audio.play().catch(()=>{});   // 🔴 THIS WAS MISSING
+
+  titleEl.textContent = tracks[index].title;
+  artistEl.textContent = tracks[index].artist;
+
+  playing = true;
+}
 
   function togglePlay(){
     if (tracks.length === 0) return;
@@ -349,8 +356,9 @@ window.goMusic = () => {
   prevBtn.onclick = () => loadTrack(index - 1);
   nextBtn.onclick = () => loadTrack(index + 1);
   playBtn.onclick = togglePlay;
-  centerBtn.onclick = togglePlay;
-
+  centerBtn.onclick = () => {
+  loadTrack(selectedSong);
+};
   audio.addEventListener("ended", () => {
     loadTrack(index + 1);
     audio.play().catch(()=>{});
