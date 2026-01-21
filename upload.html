@@ -112,7 +112,7 @@ function saveTrack(){
     const track = {
       title,
       artist,
-      src: e.target.result   // ✅ BASE64 AUDIO (WORKS AFTER REDIRECT)
+      src: e.target.result   // ✅ THIS MAKES IT PLAYABLE
     };
 
     const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
@@ -122,7 +122,7 @@ function saveTrack(){
     window.location.href = "player.html";
   };
 
-  reader.readAsDataURL(file); // 🔥 THIS IS THE KEY
+  reader.readAsDataURL(file); // 🔥 REQUIRED
 }
 
 function goBack(){
