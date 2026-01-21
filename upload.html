@@ -96,26 +96,33 @@ button{
 
 <script>
 function saveTrack(){
-  const title = document.getElementById("title").value;
-  const artist = document.getElementById("artist").value;
+  const title = document.getElementById("title").value.trim();
+  const artist = document.getElementById("artist").value.trim();
   const fileInput = document.getElementById("file");
 
-  if(!title || !artist || !fileInput.files.length){
+  if (!title || !artist || !fileInput.files.length) {
     alert("Please fill out all fields.");
     return;
   }
 
-  const track = {
-    title,
-    artist,
-    src: URL.createObjectURL(fileInput.files[0])
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(e){
+    const track = {
+      title,
+      artist,
+      src: e.target.result   // ✅ BASE64 AUDIO (WORKS AFTER REDIRECT)
+    };
+
+    const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
+    tracks.push(track);
+    localStorage.setItem("tracks", JSON.stringify(tracks));
+
+    window.location.href = "player.html";
   };
 
-  let tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-  tracks.push(track);
-  localStorage.setItem("tracks", JSON.stringify(tracks));
-
-  window.location.href = "player.html";
+  reader.readAsDataURL(file); // 🔥 THIS IS THE KEY
 }
 
 function goBack(){
