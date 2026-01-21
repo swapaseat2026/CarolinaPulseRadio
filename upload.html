@@ -6,76 +6,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root{
-  --black:#000;
-  --dark:#020402;
-  --neon:#39FF14;
-  --blue:#00B4FF;
-}
-
-*{
-  box-sizing:border-box;
-  font-family:system-ui,-apple-system,Arial,sans-serif;
-}
-
 body{
   min-height:100vh;
   display:grid;
   place-items:center;
-  background:
-    radial-gradient(800px circle at 20% 20%, rgba(57,255,20,.25), transparent 55%),
-    linear-gradient(180deg,#020402,#000);
+  background:#020402;
   color:#fff;
+  font-family:system-ui,Arial;
 }
-
 .card{
   width:340px;
   padding:24px;
-  border-radius:22px;
-  background:linear-gradient(180deg,#0a120a,#020402);
-  border:1px solid rgba(57,255,20,.35);
-  box-shadow:0 0 40px rgba(57,255,20,.35);
+  border-radius:20px;
+  background:#0a120a;
 }
-
-h1{
-  text-align:center;
-  color:var(--blue);
-  margin-bottom:6px;
-}
-
-p{
-  text-align:center;
-  font-size:12px;
-  opacity:.7;
-  margin-bottom:18px;
-}
-
-input{
+input,button{
   width:100%;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:10px;
-  border:1px solid rgba(57,255,20,.3);
-  background:#020402;
-  color:#fff;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  border-radius:14px;
-  border:none;
-  cursor:pointer;
-  font-weight:800;
-  background:linear-gradient(180deg,var(--neon),#0a120a);
-  color:#000;
-}
-
-.back{
   margin-top:10px;
-  background:#020402;
-  color:var(--neon);
-  border:1px solid rgba(57,255,20,.35);
+  padding:10px;
+}
+button{
+  background:#39FF14;
+  border:none;
+  font-weight:800;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -83,57 +37,63 @@ button{
 <body>
 
 <div class="card">
-  <h1>Upload Music</h1>
-  <p>Add your track to 2BANGUZHQ</p>
+  <h2>Upload Song</h2>
 
-  <input type="text" id="title" placeholder="Song Title">
-  <input type="text" id="artist" placeholder="Artist Name">
+  <input id="title" placeholder="Song title">
+  <input id="artist" placeholder="Artist name">
   <input type="file" id="file" accept="audio/*">
 
-  <button onclick="saveTrack()">Save Track</button>
-  <button class="back" onclick="goBack()">Back to Player</button>
+  <button onclick="uploadSong()">Upload</button>
+  <button onclick="goBack()">Back</button>
 </div>
 
+<!-- FIREBASE SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
-function saveTrack(){
+const firebaseConfig = {
+  apiKey: "AIzaSyDWACkdw3uQ6HWlECvs9O81ndEcjVbEMnw",
+  authDomain: "banguz-hq-ipod.firebaseapp.com",
+  projectId: "banguz-hq-ipod",
+  storageBucket: "banguz-hq-ipod.firebasestorage.app",
+  messagingSenderId: "887274435554",
+  appId: "1:887274435554:web:9e7809541400e4e83effbb"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const storage = firebase.storage();
+const db = firebase.firestore();
+
+function uploadSong(){
   const title = document.getElementById("title").value;
   const artist = document.getElementById("artist").value;
-  const fileInput = document.getElementById("file");
+  const file = document.getElementById("file").files[0];
 
-  if(!title || !artist || !fileInput.files.length){
-    alert("Please fill out all fields.");
+  if(!title || !artist || !file){
+    alert("Fill all fields");
     return;
   }
 
-  const file = fileInput.files[0];
+  const storageRef = storage.ref("tracks/" + Date.now() + "_" + file.name);
 
-  // SAFE localStorage limit (~4MB max Base64)
-  if (file.size > 3 * 1024 * 1024) {
-    alert("File too large for browser storage. Use a smaller file for now.");
-    return;
-  }
-
-  const reader = new FileReader();
-
-
-  reader.onload = () => {
-    const track = {
+  storageRef.put(file).then(snapshot => {
+    return snapshot.ref.getDownloadURL();
+  }).then(url => {
+    return db.collection("tracks").add({
       title,
       artist,
-      src: reader.result
-    };
-
-    const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-    tracks.push(track);
-    localStorage.setItem("tracks", JSON.stringify(tracks));
-
-    // ✅ GUARANTEED REDIRECT
-    setTimeout(() => {
-      window.location.href = "player.html";
-    }, 100);
-  };
-
-  reader.readAsDataURL(file);
+      url,
+      created: Date.now()
+    });
+  }).then(() => {
+    window.location.href = "player.html";
+  }).catch(err => {
+    alert("Upload failed");
+    console.error(err);
+  });
 }
 
 function goBack(){
