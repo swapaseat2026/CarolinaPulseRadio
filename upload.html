@@ -4,99 +4,35 @@
 <meta charset="UTF-8">
 <title>Upload Music | 2BANGUZHQ</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body{
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  background:#020402;
-  color:#fff;
-  font-family:system-ui,Arial;
-}
-.card{
-  width:340px;
-  padding:24px;
-  border-radius:20px;
-  background:#0a120a;
-}
-input,button{
-  width:100%;
-  margin-top:10px;
-  padding:10px;
-}
-button{
-  background:#39FF14;
-  border:none;
-  font-weight:800;
-  cursor:pointer;
-}
-</style>
 </head>
 
 <body>
 
-<div class="card">
-  <h2>Upload Song</h2>
+<h2>Upload Music</h2>
 
-  <input id="title" placeholder="Song title">
-  <input id="artist" placeholder="Artist name">
-  <input type="file" id="file" accept="audio/*">
+<input id="title" placeholder="Song title"><br><br>
+<input id="artist" placeholder="Artist"><br><br>
+<input id="file" type="file" accept="audio/*"><br><br>
 
-  <button onclick="uploadSong()">Upload</button>
-  <button onclick="goBack()">Back</button>
-</div>
-
-<!-- FIREBASE SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<button onclick="saveTrack()">Save</button>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDWACkdw3uQ6HWlECvs9O81ndEcjVbEMnw",
-  authDomain: "banguz-hq-ipod.firebaseapp.com",
-  projectId: "banguz-hq-ipod",
-  storageBucket: "banguz-hq-ipod.firebasestorage.app",
-  messagingSenderId: "887274435554",
-  appId: "1:887274435554:web:9e7809541400e4e83effbb"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const storage = firebase.storage();
-const db = firebase.firestore();
-
-function uploadSong(){
+function saveTrack(){
   const title = document.getElementById("title").value;
   const artist = document.getElementById("artist").value;
   const file = document.getElementById("file").files[0];
 
   if(!title || !artist || !file){
-    alert("Fill all fields");
+    alert("Fill everything");
     return;
   }
 
-  const storageRef = storage.ref("tracks/" + Date.now() + "_" + file.name);
+  const url = URL.createObjectURL(file);
 
-  storageRef.put(file).then(snapshot => {
-    return snapshot.ref.getDownloadURL();
-  }).then(url => {
-    return db.collection("tracks").add({
-      title,
-      artist,
-      url,
-      created: Date.now()
-    });
-  }).then(() => {
-    window.location.href = "player.html";
-  }).catch(err => {
-    alert("Upload failed");
-    console.error(err);
-  });
-}
+  const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
+  tracks.push({ title, artist, src: url });
 
-function goBack(){
+  localStorage.setItem("tracks", JSON.stringify(tracks));
   window.location.href = "player.html";
 }
 </script>
