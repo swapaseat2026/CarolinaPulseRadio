@@ -357,9 +357,8 @@ window.goMusic = () => {
   prevBtn.onclick = () => loadTrack(index - 1);
   nextBtn.onclick = () => loadTrack(index + 1);
   playBtn.onclick = togglePlay;
-  centerBtn.onclick = () => {
-  loadTrack(selectedSong);
-};
+  centerBtn.onclick = togglePlay;
+ 
   audio.addEventListener("ended", () => {
     loadTrack(index + 1);
     audio.play().catch(()=>{});
