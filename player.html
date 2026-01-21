@@ -265,7 +265,12 @@ body{
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+prevBtn.onclick = () => loadTrack(index - 1);
+nextBtn.onclick = () => loadTrack(index + 1);
 
+playBtn.onclick = togglePlay;     // 👈 PUT IT HERE
+centerBtn.onclick = togglePlay;   // 👈 PUT IT HERE
+ 
   const songList = document.getElementById("songList");
 let selectedSong = 0;
 
