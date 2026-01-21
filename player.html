@@ -312,8 +312,8 @@ function renderSongList(){
   index = (i + tracks.length) % tracks.length;
 
   audio.src = tracks[index].src;
-  audio.load();                 // 🔴 THIS WAS MISSING
-  audio.play().catch(()=>{});   // 🔴 THIS WAS MISSING
+  audio.load();                 
+  audio.play().catch(()=>{});   
 
   titleEl.textContent = tracks[index].title;
   artistEl.textContent = tracks[index].artist;
