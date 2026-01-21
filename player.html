@@ -310,28 +310,24 @@ function renderSongList(){
   if (tracks.length === 0) return;
 
   index = (i + tracks.length) % tracks.length;
-
   audio.src = tracks[index].src;
-  audio.load();                 
-  audio.play().catch(()=>{});   
+  audio.load(); // 👈 REQUIRED for blob URLs
 
   titleEl.textContent = tracks[index].title;
   artistEl.textContent = tracks[index].artist;
-
-  playing = true;
 }
 
   function togglePlay(){
-    if (tracks.length === 0) return;
+  if (tracks.length === 0) return;
 
-    if (audio.paused) {
-      audio.play().catch(()=>{});
-      playing = true;
-    } else {
-      audio.pause();
-      playing = false;
-    }
+  if (audio.paused) {
+    audio.play()
+      .then(() => console.log("Playing"))
+      .catch(err => console.error("Play error:", err));
+  } else {
+    audio.pause();
   }
+}
 
   menuBtn.addEventListener("click", () => {
     menuOpen = !menuOpen;
