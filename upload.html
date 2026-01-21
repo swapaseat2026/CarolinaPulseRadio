@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Upload Music | 2BANGUZHQ</title>
+<title>Upload Music</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -18,8 +18,8 @@
 
 <script>
 function saveTrack(){
-  const title = document.getElementById("title").value;
-  const artist = document.getElementById("artist").value;
+  const title = document.getElementById("title").value.trim();
+  const artist = document.getElementById("artist").value.trim();
   const fileInput = document.getElementById("file");
 
   if(!title || !artist || !fileInput.files.length){
@@ -33,9 +33,9 @@ function saveTrack(){
     const tracks = JSON.parse(localStorage.getItem("tracks")) || [];
 
     tracks.push({
-      title,
-      artist,
-      src: e.target.result   // ✅ Base64 survives reload
+      title: title,
+      artist: artist,
+      src: e.target.result
     });
 
     localStorage.setItem("tracks", JSON.stringify(tracks));
