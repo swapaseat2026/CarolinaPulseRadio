@@ -275,52 +275,55 @@ const firebaseConfig = {
   appId: "1:887274435554:web:9e7809541400e4e83effbb"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
-const audio = document.getElementById("audio");
-const titleEl = document.getElementById("title");
-const artistEl = document.getElementById("artist");
-const playBtn = document.getElementById("playBtn");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
+  const audio = document.getElementById("audio");
+  const titleEl = document.getElementById("title");
+  const artistEl = document.getElementById("artist");
+  const playBtn = document.getElementById("playBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
 
-let tracks = [];
-let index = 0;
+  let tracks = JSON.parse(localStorage.getItem("tracks")) || [];
+  let index = 0;
 
-// 🔁 LOAD TRACKS FROM FIRESTORE
-db.collection("tracks").orderBy("created").onSnapshot(snapshot => {
-  tracks = snapshot.docs.map(doc => doc.data());
-  if(tracks.length > 0){
-    loadTrack(0);
+  if(tracks.length === 0){
+    titleEl.textContent = "No tracks uploaded";
+    artistEl.textContent = "Go to Upload";
+    return;
   }
-});
 
-function loadTrack(i){
-  index = (i + tracks.length) % tracks.length;
-  audio.src = tracks[index].url;
-  titleEl.textContent = tracks[index].title;
-  artistEl.textContent = tracks[index].artist;
-  audio.load();
-}
-
-function togglePlay(){
-  if(audio.paused){
-    audio.play().catch(err => console.error(err));
-  } else {
-    audio.pause();
+  function loadTrack(i){
+    index = (i + tracks.length) % tracks.length;
+    audio.src = tracks[index].src;
+    audio.load();
+    titleEl.textContent = tracks[index].title;
+    artistEl.textContent = tracks[index].artist;
   }
-}
 
-playBtn.onclick = togglePlay;
-prevBtn.onclick = () => loadTrack(index - 1);
-nextBtn.onclick = () => loadTrack(index + 1);
+  function togglePlay(){
+    if(audio.paused){
+      audio.play().catch(err => console.error(err));
+    } else {
+      audio.pause();
+    }
+  }
 
-audio.addEventListener("ended", () => {
-  loadTrack(index + 1);
-  audio.play();
+  playBtn.onclick = togglePlay;
+  prevBtn.onclick = () => loadTrack(index - 1);
+  nextBtn.onclick = () => loadTrack(index + 1);
+
+  audio.addEventListener("ended", () => {
+    loadTrack(index + 1);
+    audio.play();
+  });
+
+  loadTrack(0);
+
 });
 </script>
+
 
 </body>
 </html>
