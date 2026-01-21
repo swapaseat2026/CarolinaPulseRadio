@@ -90,12 +90,33 @@ body{
   font-weight:800;
   letter-spacing:1px;
 }
-
-/* ===== MENU ===== */
 .menu{
   display:none;
   margin-top:8px;
+  font-size:12px;
+  background:#020402;
+  border:1px solid rgba(57,255,20,.3);
+  border-radius:10px;
+  z-index:5;
 }
+
+.song-list{
+  display:none;
+  margin-top:8px;
+  font-size:12px;
+}
+
+.song{
+  padding:6px;
+  border-bottom:1px solid rgba(57,255,20,.15);
+}
+
+.song.active{
+  background:rgba(57,255,20,.25);
+  color:var(--neon);
+  font-weight:800;
+}
+
 .item{
   font-size:12px;
   padding:6px;
@@ -211,7 +232,7 @@ body{
   <div class="item" onclick="goUpload()">Upload</div>
   <div class="item" onclick="goMusic()">My Music</div>
 </div>
-
+<div class="song-list" id="songList"></div>
   <div class="now">
     <div class="art"></div>
     <div class="meta">
@@ -244,6 +265,20 @@ body{
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+  const songList = document.getElementById("songList");
+let selectedSong = 0;
+
+function renderSongList(){
+  songList.innerHTML = "";
+
+  tracks.forEach((track, i) => {
+    const div = document.createElement("div");
+    div.className = "song" + (i === selectedSong ? " active" : "");
+    div.textContent = track.title;
+    songList.appendChild(div);
+  });
+}
 
   /* ===== ELEMENTS ===== */
   const menu = document.getElementById("menu");
@@ -303,7 +338,12 @@ window.goUpload = () => {
 window.goMusic = () => {
   menu.style.display = "none";
   menuOpen = false;
+
+  songList.style.display = "block";
+  renderSongList();
+  loadTrack(selectedSong);
 };
+
 
   /* ===== BUTTONS ===== */
   prevBtn.onclick = () => loadTrack(index - 1);
