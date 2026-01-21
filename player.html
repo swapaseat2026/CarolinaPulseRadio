@@ -1,57 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Player</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<title>2BANGUZHQ Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+:root{
+  --black:#000;
+  --dark:#020402;
+  --neon:#39FF14;
+  --neon-soft:#7CFF6B;
+  --blue:#00B4FF;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Arial,sans-serif;}
+
+body{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(900px circle at 20% 15%, rgba(57,255,20,.25), transparent 55%),
+    radial-gradient(900px circle at 80% 85%, rgba(0,180,255,.18), transparent 55%),
+    linear-gradient(180deg,#020402,#000);
+  color:#fff;
+}
+
+/* ===== 3D BODY ===== */
+.stage{ perspective:1200px; }
+.ipod{
+  width:320px;height:560px;border-radius:42px;
+  transform-style:preserve-3d;
+  transform:rotateX(10deg) rotateY(-12deg);
+  transition:.4s ease;
+  position:relative;
+}
+.stage:hover .ipod{ transform:rotateX(5deg) rotateY(-6deg); }
+
+.shell{
+  position:absolute; inset:0; border-radius:42px;
+  background:linear-gradient(180deg,#0a120a,#020402);
+  border:1px solid rgba(57,255,20,.3);
+  box-shadow: inset 0 0 30px rgba(57,255,20,.25), 0 30px 60px rgba(0,0,0,.9);
+}
+
+/* ===== SCREEN ===== */
+.screen{
+  position:absolute; top:22px; left:20px; right:20px;
+  height:260px; border-radius:22px; padding:14px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(57,255,20,.25), transparent 55%),
+    linear-gradient(180deg,#050905,#020402);
+  border:1px solid rgba(57,255,20,.35);
+  transform:translateZ(8px);
+  display:flex; flex-direction:column;
+}
+
+.status{
+  display:flex; justify-content:space-between;
+  font-size:12px; color:var(--blue);
+}
+.brand{
+  text-align:center; margin-top:6px;
+  color:var(--blue); font-weight:800; letter-spacing:1px;
+}
+
+/* ===== MENU ===== */
+.menu{
+  display:none;
+  margin-top:8px;
+  font-size:12px;
+  background:#020402;
+  border:1px solid rgba(57,255,20,.3);
+  border-radius:10px;
+  overflow:hidden;
+}
+.item{
+  padding:8px 10px;
+  border-bottom:1px solid rgba(57,255,20,.15);
+  cursor:pointer;
+}
+.item:last-child{border-bottom:none;}
+.item:hover{ background:rgba(57,255,20,.12); }
+
+.now{
+  display:flex; gap:12px; align-items:center;
+  margin-top:10px;
+}
+.art{
+  width:64px;height:64px;border-radius:12px;
+  background:linear-gradient(145deg,var(--neon),#0a120a);
+  box-shadow:0 0 25px rgba(57,255,20,.7);
+}
+.meta{flex:1;}
+.title{font-weight:800;color:var(--neon); font-size:13px;}
+.artist{font-size:12px;opacity:.8;}
+
+.progress{ margin-top:auto; }
+.bar{
+  height:8px;background:#020402;border-radius:999px;
+  border:1px solid rgba(57,255,20,.3);
+  overflow:hidden;
+}
+.fill{
+  height:100%; width:0%;
+  background:linear-gradient(90deg,var(--neon),var(--neon-soft));
+}
+
+/* ===== CLICK WHEEL ===== */
+.wheel-area{
+  position:absolute; bottom:26px; left:0; right:0;
+  display:grid; place-items:center;
+  transform:translateZ(10px);
+}
+.wheel{
+  width:220px;height:220px;border-radius:50%;
+  background:
+    radial-gradient(circle at 70% 75%, rgba(57,255,20,.25), transparent 55%),
+    linear-gradient(180deg,#0a120a,#020402);
+  border:1px solid rgba(57,255,20,.4);
+  box-shadow: inset 0 0 30px rgba(57,255,20,.25);
+  position:relative;
+}
+.center{
+  position:absolute; inset:64px; border-radius:50%;
+  display:grid; place-items:center;
+  cursor:pointer;
+  background:linear-gradient(180deg,var(--neon),#0a120a);
+  color:#000; font-weight:900;
+}
+.btn{
+  position:absolute;
+  width:60px;height:60px;
+  display:grid; place-items:center;
+  cursor:pointer;
+  color:var(--neon); font-weight:900;
+  user-select:none;
+}
+.menu-btn{ top:10px; left:50%; transform:translateX(-50%); }
+.prev{ left:10px; top:50%; transform:translateY(-50%); }
+.next{ right:10px; top:50%; transform:translateY(-50%); }
+.play{ bottom:10px; left:50%; transform:translateX(-50%); }
+</style>
 </head>
 
 <body>
 
-<h2 id="title">No song</h2>
-<p id="artist"></p>
+<div class="stage">
+  <div class="ipod">
+    <div class="shell">
 
-<button id="playBtn">▶ Play</button>
-<button id="nextBtn">Next</button>
+      <div class="screen">
+        <div class="status">
+          <span>2BANGUZHQ</span>
+          <span>🎧</span>
+        </div>
 
-<audio id="audio"></audio>
+        <div class="brand">OFFICIAL MUSIC PLAYER</div>
+
+        <!-- MENU LIST (SCREEN) -->
+        <div class="menu" id="menu">
+          <div class="item" id="menuUpload">Upload</div>
+          <div class="item" id="menuClear">Clear Tracks</div>
+          <div class="item" id="menuClose">Close</div>
+        </div>
+
+        <div class="now">
+          <div class="art"></div>
+          <div class="meta">
+            <div class="title" id="title">No tracks uploaded</div>
+            <div class="artist" id="artist">Go to Upload</div>
+          </div>
+        </div>
+
+        <div class="progress">
+          <div class="bar"><div class="fill" id="fill"></div></div>
+        </div>
+      </div>
+
+      <div class="wheel-area">
+        <div class="wheel">
+          <div class="btn menu-btn" id="menuBtn">MENU</div>
+          <div class="btn prev" id="prevBtn">⏮</div>
+          <div class="btn next" id="nextBtn">⏭</div>
+          <div class="btn play" id="playBtn">▶</div>
+          <div class="center" id="centerBtn">OK</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<audio id="audio" preload="metadata"></audio>
 
 <script>
-const audio = document.getElementById("audio");
-const titleEl = document.getElementById("title");
-const artistEl = document.getElementById("artist");
-const playBtn = document.getElementById("playBtn");
-const nextBtn = document.getElementById("nextBtn");
+document.addEventListener("DOMContentLoaded", () => {
+  // عناصر
+  const menu = document.getElementById("menu");
+  const menuBtn = document.getElementById("menuBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const playBtn = document.getElementById("playBtn");
+  const centerBtn = document.getElementById("centerBtn");
 
-let tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-let index = 0;
+  const menuUpload = document.getElementById("menuUpload");
+  const menuClear  = document.getElementById("menuClear");
+  const menuClose  = document.getElementById("menuClose");
 
-function loadTrack(i){
-  if(tracks.length === 0){
-    titleEl.textContent = "No tracks found";
-    return;
+  const audio = document.getElementById("audio");
+  const titleEl = document.getElementById("title");
+  const artistEl = document.getElementById("artist");
+  const fill = document.getElementById("fill");
+
+  let tracks = [];
+  let index = 0;
+  let menuOpen = false;
+
+  // Load tracks from localStorage
+  function readTracks(){
+    try{
+      tracks = JSON.parse(localStorage.getItem("tracks")) || [];
+    }catch(e){
+      tracks = [];
+    }
   }
 
-  index = (i + tracks.length) % tracks.length;
-  audio.src = tracks[index].src;
-  audio.load();
-
-  titleEl.textContent = tracks[index].title;
-  artistEl.textContent = tracks[index].artist;
-}
-
-function togglePlay(){
-  if(audio.paused){
-    audio.play().catch(err => console.error("PLAY ERROR:", err));
-  } else {
-    audio.pause();
+  function showNoTracks(){
+    titleEl.textContent = "No tracks uploaded";
+    artistEl.textContent = "Go to Upload";
+    fill.style.width = "0%";
+    audio.removeAttribute("src");
   }
-}
 
-playBtn.onclick = togglePlay;
-nextBtn.onclick = () => loadTrack(index + 1);
+  function loadTrack(i){
+    if(!tracks.length){
+      showNoTracks();
+      return;
+    }
+    index = (i + tracks.length) % tracks.length;
 
-loadTrack(0);
+    audio.src = tracks[index].src;   // expects Base64 dataURL from upload.html
+    audio.load();
+
+    titleEl.textContent = tracks[index].title || "Untitled";
+    artistEl.textContent = tracks[index].artist || "Unknown";
+  }
+
+  async function togglePlay(){
+    if(!tracks.length){
+      alert("No tracks yet. Go to Upload.");
+      return;
+    }
+    try{
+      if(audio.paused){
+        await audio.play();  // must be inside a click (it is)
+        playBtn.textContent = "⏸";
+      }else{
+        audio.pause();
+        playBtn.textContent = "▶";
+      }
+    }catch(err){
+      console.error(err);
+      alert("Browser blocked playback. Click ▶ again after selecting a song.");
+    }
+  }
+
+  // Progress
+  audio.addEventListener("timeupdate", () => {
+    if(audio.duration){
+      fill.style.width = ((audio.currentTime / audio.duration) * 100) + "%";
+    }
+  });
+
+  audio.addEventListener("ended", () => {
+    loadTrack(index + 1);
+    audio.play().catch(()=>{});
+  });
+
+  // Menu toggle
+  menuBtn.addEventListener("click", () => {
+    menuOpen = !menuOpen;
+    menu.style.display = menuOpen ? "block" : "none";
+  });
+
+  // Menu actions
+  menuUpload.addEventListener("click", () => location.href = "upload.html");
+  menuClear.addEventListener("click", () => {
+    localStorage.removeItem("tracks");
+    readTracks();
+    showNoTracks();
+    menu.style.display = "none";
+    menuOpen = false;
+    alert("Tracks cleared.");
+  });
+  menuClose.addEventListener("click", () => {
+    menu.style.display = "none";
+    menuOpen = false;
+  });
+
+  // Wheel buttons
+  prevBtn.addEventListener("click", () => { loadTrack(index - 1); });
+  nextBtn.addEventListener("click", () => { loadTrack(index + 1); });
+  playBtn.addEventListener("click", togglePlay);
+  centerBtn.addEventListener("click", togglePlay);
+
+  // INIT
+  readTracks();
+  if(tracks.length){
+    loadTrack(0);
+  }else{
+    showNoTracks();
+  }
+});
 </script>
 
 </body>
