@@ -112,35 +112,38 @@ function saveTrack(){
     return;
   }
 
-  // 🚨 localStorage has limits – use SMALL audio files (test mp3s)
+  console.log("File selected:", file.name, file.size);
+
   const reader = new FileReader();
 
+  reader.onerror = () => {
+    alert("❌ File could not be read by browser.");
+  };
+
   reader.onload = function(e){
+    console.log("File loaded");
+
     const track = {
       title,
       artist,
-      src: e.target.result   // ✅ Base64 audio (this WORKS across pages)
+      src: e.target.result
     };
 
     let tracks = [];
     try {
       tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-    } catch(e){
+    } catch {
       tracks = [];
     }
 
     tracks.push(track);
     localStorage.setItem("tracks", JSON.stringify(tracks));
 
-    // Go back to player
+    console.log("Track saved, redirecting...");
     window.location.href = "player.html";
   };
 
   reader.readAsDataURL(file);
-}
-
-function goBack(){
-  window.location.href = "player.html";
 }
 </script>
 
