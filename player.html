@@ -316,7 +316,7 @@ function renderSongList(){
 
   index = (i + tracks.length) % tracks.length;
   audio.src = tracks[index].src;
-  audio.load(); // 👈 REQUIRED for blob URLs
+  audio.load(); 
 
   titleEl.textContent = tracks[index].title;
   artistEl.textContent = tracks[index].artist;
