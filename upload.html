@@ -96,8 +96,8 @@ button{
 
 <script>
 function saveTrack(){
-  const title = document.getElementById("title").value.trim();
-  const artist = document.getElementById("artist").value.trim();
+  const title = document.getElementById("title").value;
+  const artist = document.getElementById("artist").value;
   const fileInput = document.getElementById("file");
 
   if(!title || !artist || !fileInput.files.length){
@@ -107,7 +107,14 @@ function saveTrack(){
 
   const file = fileInput.files[0];
 
+  // SAFE localStorage limit (~4MB max Base64)
+  if (file.size > 3 * 1024 * 1024) {
+    alert("File too large for browser storage. Use a smaller file for now.");
+    return;
+  }
+
   const reader = new FileReader();
+
 
   reader.onload = () => {
     const track = {
@@ -128,7 +135,6 @@ function saveTrack(){
 
   reader.readAsDataURL(file);
 }
-</script>
 
 function goBack(){
   window.location.href = "player.html";
