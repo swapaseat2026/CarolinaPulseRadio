@@ -311,17 +311,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   playBtn.onclick = togglePlay;
-  prevBtn.onclick = () => loadTrack(index - 1);
-  nextBtn.onclick = () => loadTrack(index + 1);
-
+ playBtn.onclick = togglePlay;
+centerBtn.onclick = togglePlay;
   audio.addEventListener("ended", () => {
     loadTrack(index + 1);
     audio.play();
   });
 
-  loadTrack(0);
+ function loadTrack(i){
+  if(tracks.length === 0) return;
 
-});
+  index = (i + tracks.length) % tracks.length;
+  audio.src = tracks[index].src;
+  audio.load();   // 🔑 REQUIRED
+}
+
 </script>
 
 
