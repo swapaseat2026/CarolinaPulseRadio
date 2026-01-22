@@ -162,7 +162,6 @@ body{
         <!-- MENU LIST (SCREEN) -->
         <div class="menu" id="menu">
           <div class="item" id="menuUpload">Upload</div>
-          <div class="item" id="menuClear">Clear Tracks</div>
           <div class="item" id="menuClose">Close</div>
         </div>
 
@@ -194,19 +193,28 @@ body{
 </div>
 
 <audio id="audio" preload="metadata"></audio>
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
+/* 🔥 FIREBASE INIT — THIS MUST BE FIRST */
+const firebaseConfig = {
+  apiKey: "AIzaSyDWACkdw3uQ6HWlECvs9O81ndEcjVbEMnw",
+  authDomain: "banguz-hq-ipod.firebaseapp.com",
+  projectId: "banguz-hq-ipod",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+
 document.addEventListener("DOMContentLoaded", () => {
   // عناصر
   const menu = document.getElementById("menu");
   const menuBtn = document.getElementById("menuBtn");
-  const prevBtn = document.getElementById("prevBtn");
-  const nextBtn = document.getElementById("nextBtn");
   const playBtn = document.getElementById("playBtn");
   const centerBtn = document.getElementById("centerBtn");
 
   const menuUpload = document.getElementById("menuUpload");
-  const menuClear  = document.getElementById("menuClear");
   const menuClose  = document.getElementById("menuClose");
 
   const audio = document.getElementById("audio");
@@ -214,38 +222,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const artistEl = document.getElementById("artist");
   const fill = document.getElementById("fill");
 
-  let tracks = [];
-  let index = 0;
+ 
   let menuOpen = false;
 
-  // Load tracks from localStorage
-  function readTracks(){
-    try{
-      tracks = JSON.parse(localStorage.getItem("tracks")) || [];
-    }catch(e){
-      tracks = [];
-    }
-  }
 
   function showNoTracks(){
     titleEl.textContent = "No tracks uploaded";
     artistEl.textContent = "Go to Upload";
     fill.style.width = "0%";
     audio.removeAttribute("src");
-  }
-
-  function loadTrack(i){
-    if(!tracks.length){
-      showNoTracks();
-      return;
-    }
-    index = (i + tracks.length) % tracks.length;
-
-    audio.src = tracks[index].src;   // expects Base64 dataURL from upload.html
-    audio.load();
-
-    titleEl.textContent = tracks[index].title || "Untitled";
-    artistEl.textContent = tracks[index].artist || "Unknown";
   }
 
   async function togglePlay(){
@@ -274,11 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  audio.addEventListener("ended", () => {
-    loadTrack(index + 1);
-    audio.play().catch(()=>{});
-  });
-
   // Menu toggle
   menuBtn.addEventListener("click", () => {
     menuOpen = !menuOpen;
@@ -287,34 +267,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Menu actions
   menuUpload.addEventListener("click", () => location.href = "upload.html");
-  menuClear.addEventListener("click", () => {
-    localStorage.removeItem("tracks");
-    readTracks();
-    showNoTracks();
-    menu.style.display = "none";
-    menuOpen = false;
-    alert("Tracks cleared.");
-  });
+ 
   menuClose.addEventListener("click", () => {
     menu.style.display = "none";
     menuOpen = false;
   });
 
-  // Wheel buttons
-  prevBtn.addEventListener("click", () => { loadTrack(index - 1); });
-  nextBtn.addEventListener("click", () => { loadTrack(index + 1); });
+ 
   playBtn.addEventListener("click", togglePlay);
   centerBtn.addEventListener("click", togglePlay);
 
-  // INIT
-  readTracks();
-  if(tracks.length){
-    loadTrack(0);
-  }else{
-    showNoTracks();
-  }
-});
+
 </script>
 
 </body>
 </html>
+
+
+ 
+
