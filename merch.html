@@ -1,53 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>2BANGUZ Merch</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <title>2BANGUZ Merch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-body{
-  margin:0;
-  background:#020402;
-  color:white;
-  font-family:system-ui, Arial;
-}
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #39ff1440, black 70%);
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+    }
 
-.header{
-  padding:16px;
-  text-align:center;
-  background:#0a120a;
-  font-weight:900;
-  letter-spacing:1px;
-}
+    .box {
+      padding: 50px;
+      border-radius: 25px;
+      background: rgba(10, 18, 10, 0.85);
+      border: 1px solid rgba(57, 255, 20, 0.4);
+      box-shadow: 0 0 40px rgba(57, 255, 20, 0.25);
+      max-width: 400px;
+    }
 
-iframe{
-  width:100%;
-  height:calc(100vh - 56px);
-  border:none;
-}
-</style>
+    h1 {
+      font-size: 26px;
+      margin-bottom: 25px;
+      color: #39ff14;
+      text-shadow: 0 0 12px rgba(57, 255, 20, 0.8);
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 18px 35px;
+      font-size: 18px;
+      font-weight: 900;
+      border-radius: 15px;
+      text-decoration: none;
+      color: black;
+      background: #39ff14;
+
+      /* 🔥 Glow Effect */
+      box-shadow:
+        0 0 15px #39ff14,
+        0 0 35px #39ff14,
+        0 0 60px rgba(57, 255, 20, 0.8);
+
+      transition: 0.25s ease;
+    }
+
+    a.button:hover {
+      transform: scale(1.08);
+      box-shadow:
+        0 0 25px #39ff14,
+        0 0 55px #39ff14,
+        0 0 90px rgba(57, 255, 20, 1);
+    }
+
+    p {
+      margin-top: 20px;
+      font-size: 14px;
+      opacity: 0.75;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="header">2BANGUZ MERCH STORE</div>
+  <div class="box">
+    <h1>🔥 Official RAW PHORM Merch Store</h1>
 
-<!-- 🔥 SHOPIFY STORE EMBED -->
-<a href="https://2banguz-collective.myshopify.com"
-     target="_blank"
-     style="
-       display:inline-block;
-       margin-top:20px;
-       padding:15px 25px;
-       background:#39FF14;
-       color:black;
-       font-weight:bold;
-       border-radius:12px;
-       text-decoration:none;
-     ">
-     Shop Merch Now →
-  </a>
-  
+    <a class="button"
+       href="https://2banguz-collective.myshopify.com"
+       target="_blank">
+      Shop Merch Now →
+    </a>
+
+    <p>New drops, hoodies, sweats & exclusive gear</p>
+  </div>
+
 </body>
 </html>
