@@ -40,7 +40,7 @@ button{
   <input id="title" placeholder="Song Title">
   <input id="artist" placeholder="Artist">
   <input id="file" type="file" accept="audio/*">
-  <button onclick="saveTrack()">Save Track</button>
+  <button type="button" onclick="saveTrack()">Save Track</button>
 </div>
 
 <!-- 🔥 FIREBASE SDKs (ONLY HERE) -->
@@ -64,39 +64,48 @@ const db = firebase.firestore();
 
 <script>
 function saveTrack(){
+  alert("saveTrack() started"); // 🔴 PROOF #1
+
   const title = document.getElementById("title").value.trim();
   const artist = document.getElementById("artist").value.trim();
   const file = document.getElementById("file").files[0];
 
   if(!title || !artist || !file){
-    alert("Please fill out all fields.");
+    alert("Missing fields");
     return;
   }
+
+  alert("Uploading file..."); // 🔴 PROOF #2
 
   const storageRef = firebase
     .storage()
     .ref("tracks/" + Date.now() + "_" + file.name);
 
   storageRef.put(file)
-    .then(snapshot => snapshot.ref.getDownloadURL())
-    .then(downloadURL => {
+    .then(snapshot => {
+      alert("Upload finished"); // 🔴 PROOF #3
+      return snapshot.ref.getDownloadURL();
+    })
+    .then(url => {
+      alert("Saving Firestore doc"); // 🔴 PROOF #4
       return firebase.firestore().collection("tracks").add({
-        title: title,
-        artist: artist,
-        url: downloadURL,
+        title,
+        artist,
+        url,
         created: firebase.firestore.FieldValue.serverTimestamp()
       });
     })
     .then(() => {
-      // ✅ REDIRECT HAPPENS ONLY AFTER EVERYTHING SAVES
+      alert("Redirecting now"); // 🔴 PROOF #5
       window.location.href = "player.html";
     })
     .catch(err => {
+      alert("ERROR: " + err.message);
       console.error(err);
-      alert("Upload failed");
     });
 }
 </script>
+
 
 </body>
 </html>
