@@ -62,32 +62,39 @@ firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();
 const db = firebase.firestore();
 
+<script>
 function saveTrack(){
   const title = document.getElementById("title").value.trim();
   const artist = document.getElementById("artist").value.trim();
   const file = document.getElementById("file").files[0];
 
   if(!title || !artist || !file){
-    alert("Fill everything");
+    alert("Please fill out all fields.");
     return;
   }
 
-  const ref = storage.ref("tracks/" + Date.now() + "_" + file.name);
-  ref.put(file).then(snapshot => {
-    return snapshot.ref.getDownloadURL();
-  }).then(url => {
-    return db.collection("tracks").add({
-      title,
-      artist,
-      url,
-      created: firebase.firestore.FieldValue.serverTimestamp()
+  const storageRef = firebase
+    .storage()
+    .ref("tracks/" + Date.now() + "_" + file.name);
+
+  storageRef.put(file)
+    .then(snapshot => snapshot.ref.getDownloadURL())
+    .then(downloadURL => {
+      return firebase.firestore().collection("tracks").add({
+        title: title,
+        artist: artist,
+        url: downloadURL,
+        created: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    })
+    .then(() => {
+      // ✅ REDIRECT HAPPENS ONLY AFTER EVERYTHING SAVES
+      window.location.href = "player.html";
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Upload failed");
     });
-  }).then(() => {
-    window.location.href = "player.html";
-  }).catch(err => {
-    console.error(err);
-    alert("Upload failed");
-  });
 }
 </script>
 
