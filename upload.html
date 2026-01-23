@@ -63,7 +63,7 @@ const storage = firebase.storage();
 const db = firebase.firestore();
 
 function saveTrack(){
-  alert("saveTrack() started"); // 🔴 PROOF #1
+  console.log("saveTrack started");
 
   const title = document.getElementById("title").value.trim();
   const artist = document.getElementById("artist").value.trim();
@@ -74,7 +74,7 @@ function saveTrack(){
     return;
   }
 
-  alert("Uploading file..."); // 🔴 PROOF #2
+  console.log("Uploading file...");
 
   const storageRef = firebase
     .storage()
@@ -82,11 +82,11 @@ function saveTrack(){
 
   storageRef.put(file)
     .then(snapshot => {
-      alert("Upload finished"); // 🔴 PROOF #3
+      console.log("Upload finished");
       return snapshot.ref.getDownloadURL();
     })
     .then(url => {
-      alert("Saving Firestore doc"); // 🔴 PROOF #4
+      console.log("Saving Firestore doc");
       return firebase.firestore().collection("tracks").add({
         title,
         artist,
@@ -95,16 +95,15 @@ function saveTrack(){
       });
     })
     .then(() => {
-      alert("Redirecting now"); // 🔴 PROOF #5
-      window.location.href = "player.html";
+      console.log("Redirecting now");
+      window.location.replace("player.html");
     })
     .catch(err => {
+      console.error("Upload error:", err);
       alert("ERROR: " + err.message);
-      console.error(err);
     });
 }
 </script>
-
 
 </body>
 </html>
