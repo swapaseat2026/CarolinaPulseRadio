@@ -68,6 +68,7 @@ const db = firebase.firestore();
 const status = document.getElementById("status");
 
 function saveTrack(){
+  const status = document.getElementById("status");
   status.textContent = "Uploading file...";
 
   const title = document.getElementById("title").value.trim();
@@ -75,7 +76,7 @@ function saveTrack(){
   const file = document.getElementById("file").files[0];
 
   if(!title || !artist || !file){
-    status.textContent = "Missing fields";
+    alert("Missing fields");
     return;
   }
 
@@ -87,20 +88,27 @@ function saveTrack(){
     .then(snapshot => snapshot.ref.getDownloadURL())
     .then(url => {
       status.textContent = "Saving track...";
+
+      // 🔥 DO NOT USE serverTimestamp here
       return firebase.firestore().collection("tracks").add({
         title,
         artist,
         url,
-        created: firebase.firestore.FieldValue.serverTimestamp()
+        created: Date.now()   // ✅ FIX
       });
     })
     .then(() => {
       status.textContent = "Done! Redirecting...";
-      window.location.replace("player.html");
+      
+      // 🔥 GUARANTEED REDIRECT
+      setTimeout(() => {
+        window.location.href = "player.html";
+      }, 600);
     })
     .catch(err => {
-      status.textContent = "Upload failed";
       console.error(err);
+      status.textContent = "Upload failed";
+      alert(err.message);
     });
 }
 </script>
