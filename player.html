@@ -241,7 +241,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadTrack(i) {
     currentIndex = i;
     const track = tracks[currentIndex];
-
+  
+    titleEl.textContent = "Loading…";
+  artistEl.textContent = "Please wait";
+   
     audio.src = track.url;
     audio.load();
 
