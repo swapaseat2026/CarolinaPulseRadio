@@ -196,7 +196,7 @@ body{
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
-/* 🔥 FIREBASE INIT — THIS MUST BE FIRST */
+/* 🔥 FIREBASE INIT */
 const firebaseConfig = {
   apiKey: "AIzaSyDWACkdw3uQ6HWlECvs9O81ndEcjVbEMnw",
   authDomain: "banguz-hq-ipod.firebaseapp.com",
@@ -206,82 +206,116 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-
 document.addEventListener("DOMContentLoaded", () => {
-  // عناصر
+
+  // ===== ELEMENTS =====
   const menu = document.getElementById("menu");
   const menuBtn = document.getElementById("menuBtn");
   const playBtn = document.getElementById("playBtn");
   const centerBtn = document.getElementById("centerBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
 
   const menuUpload = document.getElementById("menuUpload");
-  const menuClose  = document.getElementById("menuClose");
+  const menuClose = document.getElementById("menuClose");
 
   const audio = document.getElementById("audio");
   const titleEl = document.getElementById("title");
   const artistEl = document.getElementById("artist");
   const fill = document.getElementById("fill");
 
- 
+  // ===== STATE =====
   let menuOpen = false;
+  let tracks = [];
+  let currentIndex = 0;
 
+  // ===== LOAD FROM FIRESTORE =====
+  db.collection("tracks")
+    .orderBy("created", "desc")
+    .onSnapshot(snapshot => {
+      tracks = snapshot.docs.map(doc => doc.data());
+      if (tracks.length) loadTrack(0);
+      else showNoTracks();
+    });
 
-  function showNoTracks(){
+  function loadTrack(i) {
+    currentIndex = i;
+    const track = tracks[currentIndex];
+
+    audio.src = track.url;
+    audio.load();
+
+    titleEl.textContent = track.title || "Untitled";
+    artistEl.textContent = track.artist || "Unknown";
+  }
+
+  function showNoTracks() {
     titleEl.textContent = "No tracks uploaded";
     artistEl.textContent = "Go to Upload";
     fill.style.width = "0%";
     audio.removeAttribute("src");
   }
 
-  async function togglePlay(){
-    if(!tracks.length){
-      alert("No tracks yet. Go to Upload.");
-      return;
-    }
-    try{
-      if(audio.paused){
-        await audio.play();  // must be inside a click (it is)
-        playBtn.textContent = "⏸";
-      }else{
-        audio.pause();
-        playBtn.textContent = "▶";
-      }
-    }catch(err){
-      console.error(err);
-      alert("Browser blocked playback. Click ▶ again after selecting a song.");
+  async function togglePlay() {
+    if (!tracks.length) return;
+
+    if (audio.paused) {
+      await audio.play();
+      playBtn.textContent = "⏸";
+    } else {
+      audio.pause();
+      playBtn.textContent = "▶";
     }
   }
 
-  // Progress
+  // ===== PROGRESS =====
   audio.addEventListener("timeupdate", () => {
-    if(audio.duration){
-      fill.style.width = ((audio.currentTime / audio.duration) * 100) + "%";
+    if (audio.duration) {
+      fill.style.width = (audio.currentTime / audio.duration) * 100 + "%";
     }
   });
 
-  // Menu toggle
+  // ===== CONTROLS =====
+  playBtn.addEventListener("click", togglePlay);
+  centerBtn.addEventListener("click", togglePlay);
+
+  prevBtn.addEventListener("click", () => {
+    if (!tracks.length) return;
+    currentIndex = (currentIndex - 1 + tracks.length) % tracks.length;
+    loadTrack(currentIndex);
+    audio.play().catch(()=>{});
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (!tracks.length) return;
+    currentIndex = (currentIndex + 1) % tracks.length;
+    loadTrack(currentIndex);
+    audio.play().catch(()=>{});
+  });
+
+  // ===== MENU =====
   menuBtn.addEventListener("click", () => {
     menuOpen = !menuOpen;
     menu.style.display = menuOpen ? "block" : "none";
   });
 
-  // Menu actions
-  menuUpload.addEventListener("click", () => location.href = "upload.html");
- 
+  menuUpload.addEventListener("click", () => {
+    location.href = "upload.html";
+  });
+
   menuClose.addEventListener("click", () => {
     menu.style.display = "none";
     menuOpen = false;
   });
 
- 
-  playBtn.addEventListener("click", togglePlay);
-  centerBtn.addEventListener("click", togglePlay);
-
-
+});
 </script>
 
 </body>
 </html>
+
+
+
 
 
  
