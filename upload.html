@@ -41,7 +41,10 @@ button{
   <input id="artist" placeholder="Artist">
   <input id="file" type="file" accept="audio/*">
   <button type="button" onclick="saveTrack()">Save Track</button>
-</div>
+  
+  <p id="status" style="font-size:14px; opacity:.8;"></p>
+</div>.
+
 
 <!-- 🔥 FIREBASE SDKs (ONLY HERE) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -62,31 +65,28 @@ firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();
 const db = firebase.firestore();
 
+const status = document.getElementById("status");
+
 function saveTrack(){
-  console.log("saveTrack started");
+  status.textContent = "Uploading file...";
 
   const title = document.getElementById("title").value.trim();
   const artist = document.getElementById("artist").value.trim();
   const file = document.getElementById("file").files[0];
 
   if(!title || !artist || !file){
-    alert("Missing fields");
+    status.textContent = "Missing fields";
     return;
   }
-
-  console.log("Uploading file...");
 
   const storageRef = firebase
     .storage()
     .ref("tracks/" + Date.now() + "_" + file.name);
 
   storageRef.put(file)
-    .then(snapshot => {
-      console.log("Upload finished");
-      return snapshot.ref.getDownloadURL();
-    })
+    .then(snapshot => snapshot.ref.getDownloadURL())
     .then(url => {
-      console.log("Saving Firestore doc");
+      status.textContent = "Saving track...";
       return firebase.firestore().collection("tracks").add({
         title,
         artist,
@@ -95,12 +95,12 @@ function saveTrack(){
       });
     })
     .then(() => {
-      console.log("Redirecting now");
+      status.textContent = "Done! Redirecting...";
       window.location.replace("player.html");
     })
     .catch(err => {
-      console.error("Upload error:", err);
-      alert("ERROR: " + err.message);
+      status.textContent = "Upload failed";
+      console.error(err);
     });
 }
 </script>
