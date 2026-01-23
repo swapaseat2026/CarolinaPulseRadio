@@ -89,13 +89,12 @@ function saveTrack(){
     .then(url => {
       status.textContent = "Saving track...";
 
-      // 🔥 DO NOT USE serverTimestamp here
-      return firebase.firestore().collection("tracks").add({
-        title,
-        artist,
-        url,
-        created: Date.now()   // ✅ FIX
-      });
+    firebase.firestore().collection("tracks").add({
+  title,
+  artist,
+  url,
+  created: Date.now()   // ✅ USE THIS
+});
     })
     .then(() => {
       status.textContent = "Done! Redirecting...";
