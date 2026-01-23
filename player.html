@@ -162,6 +162,7 @@ body{
         <!-- MENU LIST (SCREEN) -->
         <div class="menu" id="menu">
           <div class="item" id="menuUpload">Upload</div>
+          <div class="item" id="menuMerch">Merch Store</div>
           <div class="item" id="menuClose">Close</div>
         </div>
 
@@ -217,8 +218,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("nextBtn");
 
   const menuUpload = document.getElementById("menuUpload");
+  const menuMerch = document.getElementById("menuMerch");
   const menuClose = document.getElementById("menuClose");
-
+  
   const audio = document.getElementById("audio");
   const titleEl = document.getElementById("title");
   const artistEl = document.getElementById("artist");
@@ -305,7 +307,9 @@ document.addEventListener("DOMContentLoaded", () => {
   menuUpload.addEventListener("click", () => {
     location.href = "upload.html";
   });
-
+menuMerch.addEventListener("click", () => {
+  window.location.href = "merch.html";
+});
   menuClose.addEventListener("click", () => {
     menu.style.display = "none";
     menuOpen = false;
