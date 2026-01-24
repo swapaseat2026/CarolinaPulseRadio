@@ -337,8 +337,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ LINKS
   menuMerch.onclick = () => window.location.href = "merch.html";
   menuYoutube.onclick = () => window.location.href = "youtube.html";
-
-    });
+  /* ✅ PASTE RIGHT HERE */
+menuBuy.addEventListener("click", () => {
+  window.open(
+    "https://buy.stripe.com/test_3cIcMYeLQ52Sb6QfNM0Fi00",
+    "_blank"
+  );
+});
+});   
 </script>
 
 </body>
