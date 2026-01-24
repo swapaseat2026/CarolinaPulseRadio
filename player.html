@@ -217,7 +217,6 @@ body{
         <div class="menu" id="menu">
           <div class="item" id="menuYoutube">YouTube</div>
           <div class="item" id="menuMerch">Merch Store</div>
-          <div class="btn menu-btn" id="menuBtn">MENU</div>
           <div class="item" id="menuClose">Close</div>
         </div>
 
@@ -362,15 +361,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // MENU
- // ✅ MENU TOGGLE
+// ✅ MENU TOGGLE
 menuBtn.addEventListener("click", () => {
-  console.log("MENU CLICKED");
-
-  if(menu.style.display === "block"){
-    menu.style.display = "none";
-  } else {
-    menu.style.display = "block";
-  }
+  menu.style.display =
+    menu.style.display === "block" ? "none" : "block";
 });
 
 // ✅ CLOSE
@@ -387,6 +381,8 @@ menuMerch.addEventListener("click", () => {
 menuYoutube.addEventListener("click", () => {
   window.location.href = "youtube.html";
 });
+
+}); 
 </script>
 
 </body>
