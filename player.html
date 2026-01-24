@@ -142,6 +142,23 @@ body{
 .prev{ left:10px; top:50%; transform:translateY(-50%); }
 .next{ right:10px; top:50%; transform:translateY(-50%); }
 .play{ bottom:10px; left:50%; transform:translateX(-50%); }
+/* 💳 BUY BUTTON STYLE */
+.buyBtn{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:12px;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(180deg,var(--blue),#001a22);
+  color:white;
+  box-shadow:0 0 15px rgba(0,180,255,.7);
+}
+
+.buyBtn:hover{
+  transform:scale(1.05);
+}
 </style>
 </head>
 
@@ -171,6 +188,11 @@ body{
           <div class="meta">
             <div class="title" id="title">No tracks uploaded</div>
             <div class="artist" id="artist">Go to Upload</div>
+            <!-- 💳 BUY BUTTON (PASTE RIGHT HERE) -->
+  <button class="buyBtn" id="buyBtn" style="display:none;"
+    onclick="window.open('https://buy.stripe.com/test_3cIcMYeLQ52Sb6QfNM0Fi00')">
+    Buy This Song 💳
+  </button>
           </div>
         </div>
 
@@ -242,18 +264,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   function loadTrack(i) {
-    currentIndex = i;
-    const track = tracks[currentIndex];
-  
-    titleEl.textContent = "Loading…";
-  artistEl.textContent = "Please wait";
-   
-    audio.src = track.url;
-    audio.load();
+  currentIndex = i;
+  const track = tracks[currentIndex];
 
-    titleEl.textContent = track.title || "Untitled";
-    artistEl.textContent = track.artist || "Unknown";
-  }
+  // ✅ SHOW BUY BUTTON WHEN SONG LOADS
+  document.getElementById("buyBtn").style.display = "block";
+
+  audio.src = track.url;
+  audio.load();
+
+  titleEl.textContent = track.title || "Untitled";
+  artistEl.textContent = track.artist || "Unknown";
+}
 
   function showNoTracks() {
     titleEl.textContent = "No tracks uploaded";
