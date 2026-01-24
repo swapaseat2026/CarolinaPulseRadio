@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>2BANGUZHQ Player</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
@@ -38,14 +38,7 @@ body{
   width:320px;
   height:560px;
   border-radius:42px;
-  transform-style:preserve-3d;
-  transform:rotateX(10deg) rotateY(-10deg);
-  transition:.4s ease;
   position:relative;
-}
-
-.stage:hover .ipod{
-  transform:rotateX(5deg) rotateY(-5deg);
 }
 
 .shell{
@@ -72,26 +65,22 @@ body{
   border:1px solid rgba(57,255,20,.35);
   display:flex;
   flex-direction:column;
-
-  z-index:5;
 }
-  
+
 .brand{
   text-align:center;
-  margin:8px 0;
   font-weight:900;
   color:var(--blue);
+  margin-bottom:10px;
 }
 
+/* ===== MENU ===== */
 .menu{
   display:none;
   background:#020402;
   border:1px solid rgba(57,255,20,.25);
   border-radius:12px;
   overflow:hidden;
-
-  position:relative;
-  z-index:9999;
 }
 
 .item{
@@ -118,6 +107,7 @@ body{
   font-size:13px;
 }
 
+/* ===== PROGRESS ===== */
 .progress{
   margin-top:auto;
 }
@@ -135,33 +125,14 @@ body{
   background:linear-gradient(90deg,var(--neon),#7CFF6B);
 }
 
-/* 💳 BUY BUTTON */
-.buyBtn{
-  margin-top:12px;
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:14px;
-  font-weight:900;
-  cursor:pointer;
-  display:none;
-  background:linear-gradient(180deg,var(--blue),#001a22);
-  color:white;
-  box-shadow:0 0 15px rgba(0,180,255,.7);
-}
-
-.buyBtn:hover{
-  transform:scale(1.05);
-}
-
 /* ===== CLICK WHEEL ===== */
 .wheel-area{
   position:absolute;
-  bottom:26px;
+  bottom:30px;
   left:0;
   right:0;
-  display:grid;
-  place-items:center;
+  display:flex;
+  justify-content:center;
 }
 
 .wheel{
@@ -209,27 +180,21 @@ body{
   <div class="ipod">
     <div class="shell">
 
+      <!-- SCREEN -->
       <div class="screen">
-
-        <div class="brand">OFFICIAL MUSIC PLAYER</div>
+        <div class="brand">2BANGUZHQ PLAYER</div>
 
         <!-- MENU -->
         <div class="menu" id="menu">
-          <div class="item" id="menuYoutube">YouTube</div>
-          <div class="item" id="menuMerch">Merch Store</div>
-          <div class="item" id="menuClose">Close</div>
+          <div class="item" id="menuYoutube">📺 YouTube</div>
+          <div class="item" id="menuMerch">🛍 Merch Store</div>
+          <div class="item" id="menuClose">❌ Close</div>
         </div>
 
         <!-- NOW PLAYING -->
         <div class="now">
           <div class="title" id="title">Loading…</div>
           <div class="artist" id="artist">Please wait</div>
-
-          <!-- BUY BUTTON -->
-          <button class="buyBtn" id="buyBtn"
-            onclick="window.open('https://buy.stripe.com/test_3cIcMYeLQ52Sb6QfNM0Fi00')">
-            Buy This Song 💳
-          </button>
         </div>
 
         <!-- PROGRESS -->
@@ -238,12 +203,12 @@ body{
             <div class="fill" id="fill"></div>
           </div>
         </div>
-
       </div>
 
       <!-- CLICK WHEEL -->
       <div class="wheel-area">
-       <div class="btn menu-btn" id="menuBtn">MENU</div>
+        <div class="wheel">
+          <div class="btn menu-btn" id="menuBtn">MENU</div>
           <div class="btn prev" id="prevBtn">⏮</div>
           <div class="btn next" id="nextBtn">⏭</div>
           <div class="btn play" id="playBtn">▶</div>
@@ -263,18 +228,16 @@ body{
 
 <script>
 /* 🔥 FIREBASE INIT */
-const firebaseConfig = {
+firebase.initializeApp({
   apiKey: "AIzaSyDWACkdw3uQ6HWlECvs9O81ndEcjVbEMnw",
   authDomain: "banguz-hq-ipod.firebaseapp.com",
   projectId: "banguz-hq-ipod",
-};
+});
 
-firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ELEMENTS
   const menu = document.getElementById("menu");
   const menuBtn = document.getElementById("menuBtn");
   const menuClose = document.getElementById("menuClose");
@@ -290,24 +253,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const titleEl = document.getElementById("title");
   const artistEl = document.getElementById("artist");
   const fill = document.getElementById("fill");
-  const buyBtn = document.getElementById("buyBtn");
 
-  // STATE
-  let menuOpen = false;
   let tracks = [];
   let currentIndex = 0;
+  let menuOpen = false;
 
-  // LOAD SONGS FROM FIRESTORE
+  // ✅ LOAD TRACKS FROM FIRESTORE
   db.collection("tracks")
     .orderBy("created", "desc")
     .onSnapshot(snapshot => {
+
       tracks = snapshot.docs.map(doc => doc.data());
 
       if(tracks.length){
         loadTrack(0);
       } else {
-        titleEl.textContent = "No songs uploaded";
-        artistEl.textContent = "Go to Upload Page";
+        titleEl.textContent = "No tracks uploaded";
+        artistEl.textContent = "Upload songs first";
       }
     });
 
@@ -320,8 +282,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     audio.src = track.url;
     audio.load();
-
-    buyBtn.style.display = "block";
   }
 
   async function togglePlay(){
@@ -336,52 +296,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // PROGRESS BAR
+  // ✅ Progress bar
   audio.addEventListener("timeupdate", () => {
     if(audio.duration){
       fill.style.width = (audio.currentTime / audio.duration) * 100 + "%";
     }
   });
 
-  // CONTROLS
-  playBtn.addEventListener("click", togglePlay);
-  centerBtn.addEventListener("click", togglePlay);
+  // ✅ Controls
+  playBtn.onclick = togglePlay;
+  centerBtn.onclick = togglePlay;
 
-  prevBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + tracks.length) % tracks.length;
-    loadTrack(currentIndex);
-    audio.play().catch(()=>{});
-  });
+  prevBtn.onclick = () => {
+    if(!tracks.length) return;
+    loadTrack((currentIndex - 1 + tracks.length) % tracks.length);
+    audio.play();
+  };
 
-  nextBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % tracks.length;
-    loadTrack(currentIndex);
-    audio.play().catch(()=>{});
-  });
+  nextBtn.onclick = () => {
+    if(!tracks.length) return;
+    loadTrack((currentIndex + 1) % tracks.length);
+    audio.play();
+  };
 
-  // MENU
-// ✅ MENU TOGGLE
-menuBtn.addEventListener("click", () => {
-  menu.style.display =
-    menu.style.display === "block" ? "none" : "block";
+  // ✅ MENU WORKS
+  menuBtn.onclick = () => {
+    menuOpen = !menuOpen;
+    menu.style.display = menuOpen ? "block" : "none";
+  };
+
+  menuClose.onclick = () => {
+    menu.style.display = "none";
+    menuOpen = false;
+  };
+
+  // ✅ LINKS
+  menuMerch.onclick = () => window.location.href = "merch.html";
+  menuYoutube.onclick = () => window.location.href = "youtube.html";
+
 });
-
-// ✅ CLOSE
-menuClose.addEventListener("click", () => {
-  menu.style.display = "none";
-});
-
-// ✅ MERCH
-menuMerch.addEventListener("click", () => {
-  window.location.href = "merch.html";
-});
-
-// ✅ YOUTUBE
-menuYoutube.addEventListener("click", () => {
-  window.location.href = "youtube.html";
-});
-
-}); 
 </script>
 
 </body>
