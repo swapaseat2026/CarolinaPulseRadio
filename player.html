@@ -180,6 +180,7 @@ body{
         <div class="menu" id="menu">
           <div class="item" id="menuYoutube">YouTube</div>
           <div class="item" id="menuMerch">Merch Store</div>
+          <div class="item" id="menuBuy">Buy This Song 💳</div>
           <div class="item" id="menuClose">Close</div>
         </div>
 
@@ -188,11 +189,6 @@ body{
           <div class="meta">
             <div class="title" id="title">No tracks uploaded</div>
             <div class="artist" id="artist">Go to Upload</div>
-            <!-- 💳 BUY BUTTON (PASTE RIGHT HERE) -->
-  <button class="buyBtn" id="buyBtn" style="display:none;"
-    onclick="window.open('https://buy.stripe.com/test_3cIcMYeLQ52Sb6QfNM0Fi00')">
-    Buy This Song 💳
-  </button>
           </div>
         </div>
 
@@ -242,6 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   
   const menuMerch = document.getElementById("menuMerch");
+  const menuBuy = document.getElementById("menuBuy");
   const menuClose = document.getElementById("menuClose");
   
   const audio = document.getElementById("audio");
@@ -335,6 +332,9 @@ if (menuYoutube) {
     window.location.href = "youtube.html";
   });
 }
+menuBuy.addEventListener("click", () => {
+  window.open("https://buy.stripe.com/test_3cIcMYeLQ52Sb6QfNM0Fi00");
+});
   menuClose.addEventListener("click", () => {
     menu.style.display = "none";
     menuOpen = false;
