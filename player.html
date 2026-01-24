@@ -244,6 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const menu = document.getElementById("menu");
   const menuBtn = document.getElementById("menuBtn");
   const menuClose = document.getElementById("menuClose");
+  const menuBuy = document.getElementById("menuBuy");
   const menuMerch = document.getElementById("menuMerch");
   const menuYoutube = document.getElementById("menuYoutube");
 
@@ -336,8 +337,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ LINKS
   menuMerch.onclick = () => window.location.href = "merch.html";
   menuYoutube.onclick = () => window.location.href = "youtube.html";
-
-});
+// ✅ BUY SONG TAB CLICK
+menuBuy.addEventListener("click", () => {
+  window.open(
+    "https://buy.stripe.com/test_3cIcMYeLQ52Sb6QfNM0Fi00",
+    "_blank" 
+  );
+    });
 </script>
 
 </body>
