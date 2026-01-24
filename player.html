@@ -161,6 +161,7 @@ body{
 
         <!-- MENU LIST (SCREEN) -->
         <div class="menu" id="menu">
+          <div class="item" id="menuYoutube">YouTube</div>
           <div class="item" id="menuMerch">Merch Store</div>
           <div class="item" id="menuClose">Close</div>
         </div>
@@ -210,6 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ===== ELEMENTS =====
   const menu = document.getElementById("menu");
+  const menuYoutube = document.getElementById("menuYoutube");
   const menuBtn = document.getElementById("menuBtn");
   const playBtn = document.getElementById("playBtn");
   const centerBtn = document.getElementById("centerBtn");
@@ -306,6 +308,11 @@ document.addEventListener("DOMContentLoaded", () => {
 menuMerch.addEventListener("click", () => {
   window.location.href = "merch.html";
 });
+if (menuYoutube) {
+  menuYoutube.addEventListener("click", () => {
+    window.location.href = "youtube.html";
+  });
+}
   menuClose.addEventListener("click", () => {
     menu.style.display = "none";
     menuOpen = false;
