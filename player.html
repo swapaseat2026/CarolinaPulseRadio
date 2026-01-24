@@ -270,8 +270,10 @@ document.addEventListener("DOMContentLoaded", () => {
   audio.src = track.url;
   audio.load();
 
-  titleEl.textContent = track.title || "Untitled";
-  artistEl.textContent = track.artist || "Unknown";
+  titleEl.textContent = track.title;
+  artistEl.textContent = track.artist;
+
+  playBtn.textContent = "▶";
 }
 
   function showNoTracks() {
@@ -282,8 +284,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function togglePlay() {
-    if (!tracks.length) return;
+  if (!audio.src) {
+    alert("No song loaded yet");
+    return;
+  }
 
+  try {
     if (audio.paused) {
       await audio.play();
       playBtn.textContent = "⏸";
@@ -291,7 +297,11 @@ document.addEventListener("DOMContentLoaded", () => {
       audio.pause();
       playBtn.textContent = "▶";
     }
+  } catch (err) {
+    console.error("PLAY ERROR:", err);
+    alert("Playback blocked — click play again.");
   }
+}
 
   // ===== PROGRESS =====
   audio.addEventListener("timeupdate", () => {
@@ -301,23 +311,29 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===== CONTROLS =====
-  playBtn.addEventListener("click", togglePlay);
-  centerBtn.addEventListener("click", togglePlay);
+ // ▶ PLAY / PAUSE
+playBtn.addEventListener("click", togglePlay);
+centerBtn.addEventListener("click", togglePlay);
 
-  prevBtn.addEventListener("click", () => {
-    if (!tracks.length) return;
-    currentIndex = (currentIndex - 1 + tracks.length) % tracks.length;
-    loadTrack(currentIndex);
-    audio.play().catch(()=>{});
-  });
+// ⏮ PREV BUTTON
+prevBtn.addEventListener("click", () => {
+  if (!tracks.length) return;
 
-  nextBtn.addEventListener("click", () => {
-    if (!tracks.length) return;
-    currentIndex = (currentIndex + 1) % tracks.length;
-    loadTrack(currentIndex);
-    audio.play().catch(()=>{});
-  });
+  currentIndex = (currentIndex - 1 + tracks.length) % tracks.length;
+  loadTrack(currentIndex);
 
+  audio.play().catch(()=>{});
+});
+
+// ⏭ NEXT BUTTON
+nextBtn.addEventListener("click", () => {
+  if (!tracks.length) return;
+
+  currentIndex = (currentIndex + 1) % tracks.length;
+  loadTrack(currentIndex);
+
+  audio.play().catch(()=>{});
+});
   // ===== MENU =====
   menuBtn.addEventListener("click", () => {
     menuOpen = !menuOpen;
