@@ -24,114 +24,24 @@ body{
   min-height:100vh;
   display:grid;
   place-items:center;
-
-  background:
-    radial-gradient(circle at top, rgba(57,255,20,.25), transparent 60%),
-    radial-gradient(circle at bottom, rgba(0,180,255,.15), transparent 60%),
-    linear-gradient(180deg,#020402,#000);
+  background:linear-gradient(180deg,#020402,#000);
   color:#fff;
 }
 
-/* ===== IPOD BODY ===== */
 .stage{ perspective:1200px; }
 
-/* ===== 3D IPOD BODY ===== */
 .ipod{
   width:320px;
   height:560px;
   border-radius:42px;
   position:relative;
   overflow:visible;
-  text-align:center;
-
-  /* Apple black plastic gradient */
-  background:linear-gradient(
-    160deg,
-    #111827 0%,
-    #05070a 45%,
-    #000 100%
-  );
-
-  /* Real depth + lighting */
+  background:linear-gradient(160deg,#111827,#05070a,#000);
   box-shadow:
-
-    /* Top glossy highlight */
     inset 0 10px 18px rgba(255,255,255,.08),
-
-    /* Bottom inner shadow */
     inset 0 -25px 40px rgba(0,0,0,.95),
-
-    /* Outer drop shadow */
     0 35px 90px rgba(0,0,0,.85),
-
-    /* Neon edge glow */
     0 0 40px rgba(0,246,255,.20);
-
-  transition:transform .4s ease;
-}
-
-/* ===== FRONT GLOSS EDGE ===== */
-.ipod::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:42px;
-  pointer-events:none;
-
-  /* Glass reflection overlay */
-  background:linear-gradient(
-    120deg,
-    rgba(255,255,255,.18),
-    transparent 70%
-  );
-
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,.10),
-    inset 0 0 25px rgba(0,246,255,.18);
-}
-
-/* ===== SIDE THICKNESS (RIGHT EDGE) ===== */
-.ipod::after{
-  content:"";
-  position:absolute;
-  top:12px;
-  right:-24px;
-
-  width:24px;
-  height:calc(100% - 24px);
-
-  /* Metallic side gradient */
-  background:linear-gradient(
-    180deg,
-    rgba(255,255,255,.25),
-    rgba(0,0,0,.90)
-  );
-
-  border-radius:0 32px 32px 0;
-
-  /* Hard edge shadow */
-  box-shadow:
-    inset -4px 0 8px rgba(0,0,0,.9),
-    8px 0 18px rgba(0,0,0,.55);
-
-  pointer-events:none;
-}
-
-/* ===== HOVER TILT (REALISTIC 3D) ===== */
-.ipod:hover{
-  transform:perspective(900px) rotateX(5deg) rotateY(-6deg);
-}
-
-
-.shell{
-  position:absolute;
-  inset:0;
-  border-radius:42px;
-  background:linear-gradient(180deg,#0a120a,#020402);
-  border:1px solid rgba(57,255,20,.3);
-  box-shadow:
-    inset 0 0 30px rgba(57,255,20,.25),
-    0 30px 70px rgba(0,0,0,.9);
 }
 
 .screen{
@@ -142,11 +52,11 @@ body{
   height:280px;
   border-radius:34px;
   padding:16px;
-  background:linear-gradient(180deg,#050905,#020402);
+  background:#050905;
+  border:1px solid rgba(57,255,20,.35);
   overflow:hidden;
 }
 
-/* ✅ ALBUM ART GOES UNDER SCREEN */
 .album-art{
   display:flex;
   justify-content:center;
@@ -158,94 +68,19 @@ body{
   height:140px;
   object-fit:cover;
   border-radius:14px;
-  box-shadow:0 0 16px rgba(0,246,255,.25);
 }
 
-  /* Inner bezel glow */
-  border:1px solid rgba(57,255,20,.35);
-
-  box-shadow:
-    inset 0 0 25px rgba(57,255,20,.18),
-    inset 0 -10px 18px rgba(0,0,0,.85);
-
-
-/* ===== INNER BEZEL EDGE ===== */
-.screen::before{
-  content:"";
-  position:absolute;
-  inset:8px;
-
-  border-radius:24px;
-
-  border:1px solid rgba(255,255,255,.06);
-
-  box-shadow:
-    inset 0 0 18px rgba(0,0,0,.9);
-
-  pointer-events:none;
-}
-
-.brand{
-  text-align:center;
-  font-weight:900;
-  color:var(--blue);
-  margin-bottom:10px;
-}
-
-/* ===== MENU ===== */
 .menu{
   display:none;
-  background:#020402;
-  border:1px solid rgba(57,255,20,.25);
+  background:#000;
   border-radius:12px;
-  overflow:hidden;
 }
 
 .item{
   padding:10px;
   cursor:pointer;
-  border-bottom:1px solid rgba(57,255,20,.15);
-
-  font-size:13px;  
 }
 
-.item:hover{
-  background:rgba(57,255,20,.15);
-}
-
-.now{
-  margin-top:12px;
-}
-
-.title{
-  font-weight:900;
-  color:var(--neon);
-}
-
-.artist{
-  opacity:.8;
-  font-size:13px;
-}
-
-/* ===== PROGRESS ===== */
-.progress{
-  margin-top:auto;
-}
-
-.bar{
-  height:8px;
-  border-radius:999px;
-  border:1px solid rgba(57,255,20,.3);
-  overflow:hidden;
-}
-
-.fill{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,var(--neon),#7CFF6B);
-}
-
-/* ===== CLICK WHEEL ===== */
 .wheel-area{
   position:absolute;
   bottom:30px;
@@ -259,10 +94,24 @@ body{
   width:220px;
   height:220px;
   border-radius:50%;
-  background:linear-gradient(180deg,#0a120a,#020402);
-  border:1px solid rgba(57,255,20,.35);
+  background:#000;
   position:relative;
 }
+
+.btn{
+  position:absolute;
+  width:60px;
+  height:60px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  color:#39FF14;
+}
+
+.menu-btn{ top:10px; left:50%; transform:translateX(-50%); }
+.prev{ left:10px; top:50%; transform:translateY(-50%); }
+.next{ right:10px; top:50%; transform:translateY(-50%); }
+.play{ bottom:10px; left:50%; transform:translateX(-50%); }
 
 .center{
   position:absolute;
@@ -271,11 +120,10 @@ body{
   display:grid;
   place-items:center;
   cursor:pointer;
-  background:linear-gradient(180deg,var(--neon),#0a120a);
+  background:#39FF14;
   color:#000;
-  font-weight:900;
 }
-
+ 
 .btn{
   position:absolute;
   width:60px;
