@@ -75,35 +75,33 @@ body{
   border-radius:42px;
   pointer-events:none;
 
-  /* 🔥 SIDE THICKNESS (REAL 3D BODY) */
+ /* 🔥 REAL SIDE THICKNESS (VISIBLE) */
 .ipod::after{
   content:"";
   position:absolute;
 
-  /* Side placement */
-  top:12px;
-  right:-18px;
+  top:10px;
+  right:-22px;
 
-  /* Thickness size */
-  width:18px;
-  height:calc(100% - 24px);
+  width:22px;
+  height:calc(100% - 20px);
 
-  /* Side shading */
-  background: linear-gradient(
+  /* Stronger contrast metal edge */
+  background:linear-gradient(
     180deg,
-    rgba(255,255,255,.10),
-    rgba(0,0,0,.65)
+    rgba(255,255,255,.22),
+    rgba(0,0,0,.85)
   );
 
-  /* Match rounded body */
-  border-radius:0 28px 28px 0;
+  border-radius:0 30px 30px 0;
 
-  /* Inner edge shadow */
+  /* Hard shadow edge */
   box-shadow:
-    inset -2px 0 4px rgba(0,0,0,.55);
+    inset -3px 0 6px rgba(0,0,0,.85),
+    6px 0 12px rgba(0,0,0,.55);
 
   pointer-events:none;
-} 
+}
 
   /* Rim reflection like real Apple plastic */
   background: linear-gradient(
