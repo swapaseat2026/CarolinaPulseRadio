@@ -39,6 +39,30 @@ body{
   height:560px;
   border-radius:42px;
   position:relative;
+
+  /* Apple-style body gradient */
+  background: linear-gradient(
+    160deg,
+    #0c0f14 0%,
+    #05070a 45%,
+    #000 100%
+  );
+
+  /* Apple realistic lighting + depth */
+  box-shadow:
+    /* Soft top highlight */
+    inset 0 8px 16px rgba(255,255,255,.10),
+
+    /* Deep bottom shading */
+    inset 0 -20px 35px rgba(0,0,0,.90),
+
+    /* Outer drop shadow */
+    0 35px 80px rgba(0,0,0,.85),
+
+    /* Neon edge glow */
+    0 0 40px rgba(0,246,255,.22);
+
+  transition: transform .4s ease;
 }
 
 .shell{
