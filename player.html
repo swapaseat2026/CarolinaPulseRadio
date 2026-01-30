@@ -72,6 +72,36 @@ body{
   border-radius:42px;
   pointer-events:none;
 
+  /* 🔥 SIDE THICKNESS (REAL 3D BODY) */
+.ipod::after{
+  content:"";
+  position:absolute;
+
+  /* Side placement */
+  top:12px;
+  right:-18px;
+
+  /* Thickness size */
+  width:18px;
+  height:calc(100% - 24px);
+
+  /* Side shading */
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,.10),
+    rgba(0,0,0,.65)
+  );
+
+  /* Match rounded body */
+  border-radius:0 28px 28px 0;
+
+  /* Inner edge shadow */
+  box-shadow:
+    inset -2px 0 4px rgba(0,0,0,.55);
+
+  pointer-events:none;
+} 
+
   /* Rim reflection like real Apple plastic */
   background: linear-gradient(
     120deg,
