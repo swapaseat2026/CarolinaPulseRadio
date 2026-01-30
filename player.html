@@ -430,6 +430,12 @@ async function togglePlay(){
     if(!playLogged){
       playLogged = true;
 
+      /* ✅ CONNECT BUTTONS */
+  playBtn.onclick = togglePlay;
+  centerBtn.onclick = togglePlay;
+
+});
+
       db.collection("plays").add({
         title: track.title,
         artist: track.artist,
