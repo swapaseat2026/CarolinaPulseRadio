@@ -416,17 +416,41 @@ document.addEventListener("DOMContentLoaded", () => {
     audio.load();
   }
 
-  async function togglePlay(){
-    if(!tracks.length) return;
+  let playLogged = false;
 
-    if(audio.paused){
-      await audio.play();
-      playBtn.textContent = "⏸";
-    } else {
-      audio.pause();
-      playBtn.textContent = "▶";
+async function togglePlay(){
+  if(!tracks.length) return;
+
+  const track = tracks[currentIndex];
+
+  if(audio.paused){
+
+    // ▶ PLAY SONG
+    await audio.play();
+    playBtn.textContent = "⏸";
+
+    // ✅ LOG PLAY ONCE
+    if(!playLogged){
+      playLogged = true;
+
+      db.collection("plays").add({
+        title: track.title,
+        artist: track.artist,
+        url: track.url,
+        playedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      console.log("Play logged!");
     }
+
+  } else {
+
+    // ⏸ PAUSE SONG
+    audio.pause();
+    playBtn.textContent = "▶";
   }
+}
+
 
   // ✅ Progress bar
   audio.addEventListener("timeupdate", () => {
