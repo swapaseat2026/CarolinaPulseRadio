@@ -393,15 +393,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   function loadTrack(i){
-    currentIndex = i;
-    const track = tracks[currentIndex];
+  currentIndex = i;
+  const track = tracks[currentIndex];
 
-    titleEl.textContent = track.title;
-    artistEl.textContent = track.artist;
+  // ✅ Song text updates
+  titleEl.textContent = track.title;
+  artistEl.textContent = track.artist;
 
-    audio.src = track.url;
-    audio.load();
-  }
+  // ✅ Audio updates
+  audio.src = track.url;
+  audio.load();
+
+  // ✅ Album artwork updates
+  document.querySelector(".album-art img").src = track.artwork;
+}
 
   async function togglePlay(){
     if(!tracks.length) return;
