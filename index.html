@@ -2,115 +2,117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>2BANGUZHQ | Fan Portal</title>
+  <title>2BANGUZHQ Fan Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    body{
-      margin:0;
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      overflow:hidden;
-      font-family:Arial, sans-serif;
-      background:#000;
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: black;
     }
 
-    /* 🌌 Moving Galaxy Background */
-    .galaxy{
-      position:absolute;
-      inset:0;
+    /* 🌌 Space Galaxy Background */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
       background:
-        radial-gradient(circle at 20% 30%, rgba(57,255,20,.35), transparent 55%),
-        radial-gradient(circle at 80% 40%, rgba(0,180,255,.25), transparent 60%),
-        radial-gradient(circle at 50% 80%, rgba(255,0,255,.20), transparent 65%),
-        radial-gradient(circle at 60% 20%, rgba(255,255,0,.18), transparent 60%),
-        linear-gradient(180deg,#000,#050008);
-      animation: floatSpace 10s ease-in-out infinite alternate;
-      z-index:-2;
+        radial-gradient(circle at top, rgba(57,255,20,.25), transparent 60%),
+        radial-gradient(circle at bottom, rgba(0,180,255,.25), transparent 60%),
+        radial-gradient(circle at left, rgba(255,255,0,.15), transparent 60%),
+        radial-gradient(circle at right, rgba(255,0,200,.15), transparent 60%),
+        linear-gradient(180deg,#000,#020402);
+      animation: galaxyMove 10s infinite alternate ease-in-out;
+      z-index: -3;
     }
 
-    @keyframes floatSpace{
-      from{ transform:scale(1); }
-      to{ transform:scale(1.15); }
+    @keyframes galaxyMove {
+      from { transform: scale(1); }
+      to   { transform: scale(1.25); }
     }
 
-    /* ✨ Stars Overlay */
-    .stars{
-      position:absolute;
-      inset:0;
-      background:url("https://www.transparenttextures.com/patterns/stardust.png");
-      opacity:0.25;
-      animation: moveStars 30s linear infinite;
-      z-index:-1;
-    }
+    /* 🔥 Portal Ring */
+    .portal-ring {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
 
-    @keyframes moveStars{
-      from{ background-position:0 0; }
-      to{ background-position:1000px 1000px; }
-    }
+      background: radial-gradient(circle,
+        rgba(0,0,0,.85) 55%,
+        rgba(57,255,20,.15) 75%,
+        rgba(0,180,255,.12) 100%
+      );
 
-    /* 🟢 Fan Portal Circle Button */
-    .portal-circle{
-      width:260px;
-      height:260px;
-      border-radius:50%;
-      background:rgba(0,0,0,.55);
-      border:2px solid rgba(57,255,20,.75);
       box-shadow:
-        0 0 25px rgba(57,255,20,.65),
-        0 0 50px rgba(0,180,255,.35);
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      cursor:pointer;
-      transition:0.3s ease;
+        0 0 30px rgba(57,255,20,.9),
+        0 0 70px rgba(0,180,255,.45),
+        0 0 110px rgba(255,0,200,.25);
+
+      animation: portalPulse 2.5s infinite ease-in-out;
+      transition: transform .3s ease;
     }
 
-    .portal-circle:hover{
-      transform:scale(1.08);
-      box-shadow:
-        0 0 35px rgba(57,255,20,.85),
-        0 0 80px rgba(255,0,255,.35);
+    .portal-ring:hover {
+      transform: scale(1.08);
     }
 
-    .portal-title{
-      font-size:34px;
-      font-weight:900;
-      color:#39FF14;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      text-shadow:0 0 12px rgba(57,255,20,.9);
+    @keyframes portalPulse {
+      0%,100% { box-shadow: 0 0 30px rgba(57,255,20,.8),
+                        0 0 70px rgba(0,180,255,.4),
+                        0 0 110px rgba(255,0,200,.2); }
+      50%     { box-shadow: 0 0 55px rgba(57,255,20,1),
+                        0 0 95px rgba(0,180,255,.65),
+                        0 0 140px rgba(255,0,200,.35); }
     }
 
-    .portal-sub{
-      margin-top:10px;
-      font-size:14px;
-      color:#00B4FF;
-      opacity:0.9;
-      text-shadow:0 0 10px rgba(0,180,255,.6);
+    /* ✨ Portal Text */
+    .portal-text {
+      text-align: center;
+      color: white;
+    }
+
+    .portal-text h1 {
+      margin: 0;
+      font-size: 38px;
+      font-weight: 900;
+      color: #39FF14;
+      text-shadow: 0 0 18px rgba(57,255,20,.95);
+      letter-spacing: 2px;
+    }
+
+    .portal-text p {
+      margin-top: 10px;
+      font-size: 14px;
+      color: rgba(0,180,255,.95);
+      letter-spacing: 3px;
+      text-transform: uppercase;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Galaxy Background -->
-  <div class="galaxy"></div>
-  <div class="stars"></div>
-
-  <!-- Fan Portal Circle -->
-  <div class="portal-circle" onclick="enterPortal()">
-    <div class="portal-title">FAN PORTAL</div>
-    <div class="portal-sub">Enter Here</div>
+  <!-- ✅ Fan Portal Circle -->
+  <div class="portal-ring" onclick="enterPortal()">
+    <div class="portal-text">
+      <h1>FAN PORTAL</h1>
+      <p>ENTER HERE</p>
+    </div>
   </div>
 
   <script>
-    function enterPortal(){
-      // ✅ This sends fans straight to your iPod player page
+    function enterPortal() {
       window.location.href = "player.html";
     }
   </script>
