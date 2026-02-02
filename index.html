@@ -1,106 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>2BANGUZHQ</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>2BANGUZHQ Fan Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-:root{
-  --neon:#39FF14;
-  --blue:#00B4FF;
-}
+  <style>
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:
+        radial-gradient(circle at top, rgba(57,255,20,.25), transparent 60%),
+        radial-gradient(circle at bottom, rgba(0,180,255,.20), transparent 60%),
+        linear-gradient(180deg,#020402,#000);
+      font-family:Arial, sans-serif;
+      color:white;
+    }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:system-ui,-apple-system,Arial,sans-serif;
-}
+    .portal-box{
+      text-align:center;
+      padding:60px 50px;
+      border-radius:25px;
+      border:2px solid rgba(57,255,20,.5);
+      box-shadow:0 0 40px rgba(57,255,20,.35);
+      background:rgba(0,0,0,.65);
+    }
 
-body{
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  background:
-    radial-gradient(900px circle at 20% 15%, rgba(57,255,20,.25), transparent 55%),
-    linear-gradient(180deg,#020402,#000);
-  color:#fff;
-}
+    .fan-btn{
+      padding:22px 70px;
+      border:none;
+      border-radius:20px;
+      cursor:pointer;
+      background:linear-gradient(135deg,#39FF14,#00B4FF,#ff00ff);
+      box-shadow:0 0 25px rgba(0,246,255,.35);
+      transition:.25s ease;
+      text-align:center;
+    }
 
-.auth-card{
-  width:320px;
-  padding:24px;
-  border-radius:22px;
-  background:linear-gradient(180deg,#0a120a,#020402);
-  border:1px solid rgba(57,255,20,.35);
-  box-shadow:0 0 40px rgba(57,255,20,.35);
-  text-align:center;
-}
+    .fan-btn:hover{
+      transform:scale(1.07);
+      box-shadow:0 0 45px rgba(57,255,20,.8);
+    }
 
-h1{
-  color:var(--blue);
-  letter-spacing:2px;
-  margin-bottom:6px;
-}
+    .fan-title{
+      font-size:34px;
+      font-weight:900;
+      letter-spacing:2px;
+      color:black;
+    }
 
-p{
-  font-size:12px;
-  opacity:.7;
-  margin-bottom:18px;
-}
-
-input{
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:10px;
-  border:1px solid rgba(57,255,20,.3);
-  background:#020402;
-  color:#fff;
-}
-
-button{
-  width:100%;
-  padding:10px;
-  margin-top:8px;
-  border-radius:12px;
-  border:1px solid rgba(57,255,20,.35);
-  background:#020402;
-  color:var(--neon);
-  cursor:pointer;
-  font-weight:700;
-}
-
-button.primary{
-  background:linear-gradient(180deg,var(--neon),#0a120a);
-  color:#000;
-}
-</style>
+    .fan-sub{
+      font-size:14px;
+      margin-top:6px;
+      font-weight:600;
+      color:black;
+      opacity:.85;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="auth-card">
-  <h1>2BANGUZHQ</h1>
-  <p>Official Music Platform</p>
+  <div class="portal-box">
 
-  <input type="email" placeholder="Email">
-  <input type="password" placeholder="Password">
+    <!-- FAN PORTAL BUTTON -->
+    <button class="fan-btn" onclick="openPlayer()">
+      <div class="fan-title">FAN PORTAL</div>
+      <div class="fan-sub">Enter Here</div>
+    </button>
 
-  <button class="primary">Sign Up</button>
-  <button>Log In</button>
+  </div>
 
-  <p style="margin-top:14px">or</p>
-
-  <button onclick="enterGuest()">Enter as Guest</button>
-</div>
-
-<script>
-function enterGuest(){
-  window.location.href = "player.html";
-}
-</script>
+  <script>
+    function openPlayer(){
+      window.location.href = "player.html";
+    }
+  </script>
 
 </body>
 </html>
