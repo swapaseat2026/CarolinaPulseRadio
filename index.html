@@ -11,71 +11,80 @@
       height: 100vh;
       overflow: hidden;
       font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: black;
     }
 
-    /* 🌌 Moving Galaxy Background */
-    body::before {
-      content: "";
+    /* ✅ BACKGROUND IMAGE (YOUR PORTAL PHOTO) */
+    .bg {
+      position: absolute;
+      inset: 0;
+      background: url("./fanportal-bg.png") center/cover no-repeat;
+      z-index: -3;
+    }
+
+    /* 🌌 MOVING GALAXY MOTION OVERLAY */
+    .stars {
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at top, rgba(57,255,20,.25), transparent 60%),
-        radial-gradient(circle at bottom, rgba(0,180,255,.25), transparent 60%),
-        radial-gradient(circle at left, rgba(255,255,0,.15), transparent 60%),
-        radial-gradient(circle at right, rgba(255,0,200,.15), transparent 60%),
-        linear-gradient(180deg,#000,#020402);
-      animation: galaxyMove 10s infinite alternate ease-in-out;
+        radial-gradient(circle, rgba(0,255,200,.12), transparent 60%),
+        radial-gradient(circle, rgba(255,0,200,.10), transparent 65%),
+        radial-gradient(circle, rgba(255,255,0,.08), transparent 70%);
+      animation: galaxyMove 12s infinite alternate ease-in-out;
       z-index: -2;
     }
 
     @keyframes galaxyMove {
       from { transform: scale(1); }
-      to   { transform: scale(1.15); }
+      to   { transform: scale(1.25); }
     }
 
-    /* ✅ Fan Portal Circle Button */
-    .portal {
-      width: 280px;
-      height: 280px;
+    /* 🔥 CLICKABLE PORTAL BUTTON */
+    .portal-btn {
+      position: absolute;
+      top: 50%;
+      left: 62%;
+      transform: translate(-50%, -50%);
+      width: 260px;
+      height: 260px;
       border-radius: 50%;
       border: 3px solid lime;
-      box-shadow:
-        0 0 25px lime,
-        0 0 60px rgba(0,255,200,.5);
 
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
 
-      cursor: pointer;
       text-decoration: none;
-      transition: transform 0.3s ease;
+      cursor: pointer;
+
+      box-shadow:
+        0 0 30px lime,
+        0 0 80px rgba(0,255,200,.55);
+
+      transition: transform .3s ease;
     }
 
-    .portal:hover {
-      transform: scale(1.07);
+    .portal-btn:hover {
+      transform: translate(-50%, -50%) scale(1.08);
     }
 
-    /* FAN PORTAL Text */
-    .portal h1 {
+    /* FAN PORTAL TEXT */
+    .portal-btn h1 {
       margin: 0;
-      font-size: 32px;
+      font-size: 38px;
       font-weight: 900;
-      color: white;
+      color: lime;
+      text-shadow: 0 0 18px lime;
       letter-spacing: 2px;
+      text-align: center;
     }
 
-    /* ENTER HERE Small White Text */
-    .portal p {
-      margin: 8px 0 0;
+    /* ENTER HERE */
+    .portal-btn p {
+      margin-top: 10px;
       font-size: 14px;
       color: white;
-      opacity: 0.85;
+      opacity: 0.9;
       letter-spacing: 1px;
     }
   </style>
@@ -83,12 +92,17 @@
 
 <body>
 
-  <!-- ✅ CLICKABLE FAN PORTAL TAB -->
-  <a class="portal" href="player.html">
-    <h1>FAN PORTAL</h1>
+  <!-- ✅ Background Image -->
+  <div class="bg"></div>
+
+  <!-- ✅ Moving Galaxy Overlay -->
+  <div class="stars"></div>
+
+  <!-- ✅ Clickable Fan Portal -->
+  <a class="portal-btn" href="player.html">
+    <h1>FAN<br>PORTAL</h1>
     <p>ENTER HERE</p>
   </a>
 
 </body>
 </html>
-
