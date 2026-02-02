@@ -1,105 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>2BANGUZHQ Fan Portal</title.>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>2BANGUZHQ | Fan Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
     }
 
-    /* ✅ BACKGROUND IMAGE (YOUR PORTAL PHOTO) */
-    .bg {
-      position: absolute;
-      inset: 0;
-      background: url("./fanportal-bg.png") center/cover no-repeat;
-      z-index: -3;
+    body{
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      overflow:hidden;
+      background:#000;
     }
 
-    /* 🌌 MOVING GALAXY MOTION OVERLAY */
-    .stars {
-      position: absolute;
-      inset: 0;
+    /* ✅ Background Image (YOUR portal photo) */
+    .bg{
+      position:absolute;
+      inset:0;
+      background:url("./fanportal-bg.png") center/cover no-repeat;
+      z-index:-3;
+    }
+
+    /* ✅ Moving Galaxy Overlay */
+    .stars{
+      position:absolute;
+      inset:0;
       background:
         radial-gradient(circle, rgba(0,255,200,.12), transparent 60%),
         radial-gradient(circle, rgba(255,0,200,.10), transparent 65%),
         radial-gradient(circle, rgba(255,255,0,.08), transparent 70%);
       animation: galaxyMove 12s infinite alternate ease-in-out;
-      z-index: -2;
+      z-index:-2;
     }
 
-    @keyframes galaxyMove {
-      from { transform: scale(1); }
-      to   { transform: scale(1.25); }
+    @keyframes galaxyMove{
+      from{ transform:scale(1); }
+      to{ transform:scale(1.25); }
     }
 
-    /* 🔥 CLICKABLE PORTAL BUTTON */
-    .portal-btn {
-      position: absolute;
-      top: 50%;
-      left: 62%;
-      transform: translate(-50%, -50%);
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      border: 3px solid lime;
+    /* ✅ Portal Button Circle */
+    .portal{
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-decoration:none;
+      text-align:center;
 
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      text-decoration: none;
-      cursor: pointer;
-
+      border:4px solid rgba(57,255,20,.8);
       box-shadow:
-        0 0 30px lime,
-        0 0 80px rgba(0,255,200,.55);
+        0 0 25px rgba(57,255,20,.6),
+        0 0 60px rgba(0,180,255,.35);
 
-      transition: transform .3s ease;
+      backdrop-filter:blur(8px);
+      background:rgba(0,0,0,.45);
+
+      transition:transform .3s ease;
     }
 
-    .portal-btn:hover {
-      transform: translate(-50%, -50%) scale(1.08);
+    .portal:hover{
+      transform:scale(1.08);
     }
 
     /* FAN PORTAL TEXT */
-    .portal-btn h1 {
-      margin: 0;
-      font-size: 38px;
-      font-weight: 900;
-      color: lime;
-      text-shadow: 0 0 18px lime;
-      letter-spacing: 2px;
-      text-align: center;
+    .portal h1{
+      font-size:34px;
+      font-weight:900;
+      color:white;
+      text-shadow:0 0 15px lime;
+      letter-spacing:2px;
     }
 
-    /* ENTER HERE */
-    .portal-btn p {
-      margin-top: 10px;
-      font-size: 14px;
-      color: white;
-      opacity: 0.9;
-      letter-spacing: 1px;
+    /* ENTER HERE SMALL TEXT */
+    .portal p{
+      margin-top:10px;
+      font-size:14px;
+      color:white;
+      opacity:.85;
+      letter-spacing:1px;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ✅ Background Image -->
+  <!-- ✅ Background Layers -->
   <div class="bg"></div>
-
-  <!-- ✅ Moving Galaxy Overlay -->
   <div class="stars"></div>
 
-  <!-- ✅ Clickable Fan Portal -->
-  <a class="portal-btn" href="player.html">
+  <!-- ✅ Clickable Fan Portal Button -->
+  <a href="player.html" class="portal">
     <h1>FAN<br>PORTAL</h1>
     <p>ENTER HERE</p>
   </a>
