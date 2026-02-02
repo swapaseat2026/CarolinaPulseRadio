@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>2BANGUZHQ Fan Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
       height: 100vh;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
       background: black;
     }
 
-    /* 🌌 Space Galaxy Background */
+    /* 🌌 Moving Galaxy Background */
     body::before {
       content: "";
       position: absolute;
@@ -29,93 +29,65 @@
         radial-gradient(circle at right, rgba(255,0,200,.15), transparent 60%),
         linear-gradient(180deg,#000,#020402);
       animation: galaxyMove 10s infinite alternate ease-in-out;
-      z-index: -3;
+      z-index: -2;
     }
 
     @keyframes galaxyMove {
       from { transform: scale(1); }
-      to   { transform: scale(1.25); }
+      to   { transform: scale(1.15); }
     }
 
-    /* 🔥 Portal Ring */
-    .portal-ring {
-      width: 320px;
-      height: 320px;
+    /* ✅ Fan Portal Circle Button */
+    .portal {
+      width: 280px;
+      height: 280px;
       border-radius: 50%;
+      border: 3px solid lime;
+      box-shadow:
+        0 0 25px lime,
+        0 0 60px rgba(0,255,200,.5);
+
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+
       cursor: pointer;
-      position: relative;
-
-      background: radial-gradient(circle,
-        rgba(0,0,0,.85) 55%,
-        rgba(57,255,20,.15) 75%,
-        rgba(0,180,255,.12) 100%
-      );
-
-      box-shadow:
-        0 0 30px rgba(57,255,20,.9),
-        0 0 70px rgba(0,180,255,.45),
-        0 0 110px rgba(255,0,200,.25);
-
-      animation: portalPulse 2.5s infinite ease-in-out;
-      transition: transform .3s ease;
+      text-decoration: none;
+      transition: transform 0.3s ease;
     }
 
-    .portal-ring:hover {
-      transform: scale(1.08);
+    .portal:hover {
+      transform: scale(1.07);
     }
 
-    @keyframes portalPulse {
-      0%,100% { box-shadow: 0 0 30px rgba(57,255,20,.8),
-                        0 0 70px rgba(0,180,255,.4),
-                        0 0 110px rgba(255,0,200,.2); }
-      50%     { box-shadow: 0 0 55px rgba(57,255,20,1),
-                        0 0 95px rgba(0,180,255,.65),
-                        0 0 140px rgba(255,0,200,.35); }
-    }
-
-    /* ✨ Portal Text */
-    .portal-text {
-      text-align: center;
-      color: white;
-    }
-
-    .portal-text h1 {
+    /* FAN PORTAL Text */
+    .portal h1 {
       margin: 0;
-      font-size: 38px;
+      font-size: 32px;
       font-weight: 900;
-      color: #39FF14;
-      text-shadow: 0 0 18px rgba(57,255,20,.95);
+      color: white;
       letter-spacing: 2px;
     }
 
-    .portal-text p {
-      margin-top: 10px;
+    /* ENTER HERE Small White Text */
+    .portal p {
+      margin: 8px 0 0;
       font-size: 14px;
-      color: rgba(0,180,255,.95);
-      letter-spacing: 3px;
-      text-transform: uppercase;
+      color: white;
+      opacity: 0.85;
+      letter-spacing: 1px;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ✅ Fan Portal Circle -->
-  <div class="portal-ring" onclick="enterPortal()">
-    <div class="portal-text">
-      <h1>FAN PORTAL</h1>
-      <p>ENTER HERE</p>
-    </div>
-  </div>
-
-  <script>
-    function enterPortal() {
-      window.location.href = "player.html";
-    }
-  </script>
+  <!-- ✅ CLICKABLE FAN PORTAL TAB -->
+  <a class="portal" href="player.html">
+    <h1>FAN PORTAL</h1>
+    <p>ENTER HERE</p>
+  </a>
 
 </body>
 </html>
