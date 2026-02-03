@@ -293,10 +293,7 @@ body{
       <!-- SCREEN -->
       <div class="screen">
 
-        <!-- ALBUM ART -->
-        <div class="album-art">
-          <img src="./album-art.jpg" alt="Album Art">
-        </div>
+       
 
         <div class="brand">2BANGUZHQ PLAYER</div>
 
@@ -403,10 +400,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ✅ Audio updates
   audio.src = track.url;
   audio.load();
-
-  // ✅ Album artwork updates
-  document.querySelector(".album-art img").src = track.artwork;
-}
 
   async function togglePlay(){
     if(!tracks.length) return;
