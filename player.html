@@ -1,217 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>2BANGUZHQ PLAYER</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>2BANGUZHQ Player</title>
 
 <style>
 :root{
-  --neon:#39FF14;
-  --dark:#020402;
+  --black:#05070A;
+  --neon:#00F6FF;
+  --blue:#00B4FF;
+  --silver:#C9CCD6;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui, Arial, sans-serif;}
 
 body{
   min-height:100vh;
   display:grid;
   place-items:center;
-  background:radial-gradient(circle at top,#003b1f,#000);
+  background:
+    radial-gradient(circle at top, rgba(0,180,255,.18), transparent 60%),
+    radial-gradient(circle at bottom, rgba(0,246,255,.12), transparent 60%),
+    linear-gradient(180deg,#05070A,#000);
   color:#fff;
 }
 
-/* iPod Body */
+/* ===== IPOD BODY ===== */
+.stage{ perspective:1200px; }
+
 .ipod{
   width:320px;
   height:560px;
   border-radius:42px;
-  background:#000;
-  box-shadow:0 0 35px rgba(57,255,20,.35);
-  padding:20px;
   position:relative;
+  overflow:visible;
+
+  background:linear-gradient(160deg,#111827 0%, #05070a 45%, #000 100%);
+  box-shadow:
+    inset 0 10px 18px rgba(255,255,255,.08),
+    inset 0 -25px 40px rgba(0,0,0,.95),
+    0 35px 90px rgba(0,0,0,.85),
+    0 0 40px rgba(0,246,255,.18);
+
+  transition:transform .35s ease;
 }
 
-/* Screen */
+.ipod:hover{
+  transform:perspective(900px) rotateX(5deg) rotateY(-6deg);
+}
+
+/* front gloss */
+.ipod::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:42px;
+  pointer-events:none;
+  background:linear-gradient(120deg, rgba(255,255,255,.16), transparent 70%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.10),
+    inset 0 0 22px rgba(0,246,255,.14);
+}
+
+/* side thickness */
+.ipod::after{
+  content:"";
+  position:absolute;
+  top:12px;
+  right:-22px;
+  width:22px;
+  height:calc(100% - 24px);
+  background:linear-gradient(180deg, rgba(255,255,255,.22), rgba(0,0,0,.90));
+  border-radius:0 32px 32px 0;
+  box-shadow:
+    inset -4px 0 8px rgba(0,0,0,.9),
+    8px 0 18px rgba(0,0,0,.55);
+  pointer-events:none;
+}
+
+.shell{
+  position:absolute;
+  inset:0;
+  border-radius:42px;
+  background:linear-gradient(180deg, rgba(10,14,22,.9), rgba(0,0,0,.95));
+  border:1px solid rgba(0,246,255,.18);
+  box-shadow: inset 0 0 25px rgba(0,246,255,.10);
+}
+
+/* ===== SCREEN ===== */
 .screen{
-  height:260px;
-  border-radius:22px;
-  border:2px solid rgba(57,255,20,.4);
-  padding:15px;
-  text-align:center;
+  position:absolute;
+  top:22px;
+  left:20px;
+  right:20px;
+  height:280px;
+  border-radius:28px;
+  padding:14px;
+  background:linear-gradient(180deg,#0d1220,#060911);
+  border:1px solid rgba(0,246,255,.22);
+  box-shadow:
+    inset 0 0 18px rgba(0,246,255,.12),
+    inset 0 -10px 18px rgba(0,0,0,.85);
+  overflow:hidden;
 }
 
-/* Album Art */
+.brand{
+  text-align:center;
+  font-weight:900;
+  letter-spacing:.5px;
+  color:var(--blue);
+  margin-bottom:10px;
+}
+
+/* album art */
+.album-art{
+  display:flex;
+  justify-content:center;
+  margin:8px 0 10px;
+}
 .album-art img{
   width:140px;
   height:140px;
   object-fit:cover;
-  border-radius:12px;
-  box-shadow:0 0 15px rgba(57,255,20,.3);
+  border-radius:14px;
+  box-shadow:0 0 16px rgba(0,246,255,.25);
+  border:1px solid rgba(0,246,255,.18);
 }
 
-/* Text */
-.brand{color:#00ffcc;margin-top:8px;font-weight:bold;}
-.title{color:var(--neon);margin-top:8px;font-size:18px;}
-.artist{opacity:.7;font-size:13px;}
+/* menu */
+.menu{
+  display:none;
+  background:rgba(0,0,0,.75);
+  border:1px solid rgba(0,246,255,.20);
+  border-radius:12px;
+  overflow:hidden;
+  margin-top:8px;
+}
+.item{
+  padding:10px;
+  cursor:pointer;
+  border-bottom:1px solid rgba(0,246,255,.10);
+  font-size:13px;
+}
+.item:hover{ background:rgba(0,246,255,.10); }
+.item:last-child{ border-bottom:none; }
 
-/* Progress */
+/* now playing */
+.now{ margin-top:10px; }
+.title{ font-weight:900; color:#eaffff; }
+.artist{ opacity:.85; font-size:13px; color:var(--neon); margin-top:2px; }
+
+/* progress */
+.progress{ margin-top:auto; }
 .bar{
-  margin-top:10px;
-  height:4px;
-  background:#111;
-  border-radius:6px;
+  height:8px;
+  border-radius:999px;
+  border:1px solid rgba(0,246,255,.18);
   overflow:hidden;
 }
 .fill{
   height:100%;
   width:0%;
-  background:var(--neon);
+  background:linear-gradient(90deg,var(--neon), var(--blue));
 }
 
-/* Wheel */
+/* ===== CLICK WHEEL ===== */
+.wheel-area{
+  position:absolute;
+  bottom:30px;
+  left:0;
+  right:0;
+  display:flex;
+  justify-content:center;
+}
+
 .wheel{
-  margin-top:18px;
   width:220px;
   height:220px;
   border-radius:50%;
-  border:2px solid rgba(57,255,20,.4);
-  margin-inline:auto;
+  background:radial-gradient(circle at top,#1a1a1a,#000);
+  border:1px solid rgba(0,246,255,.18);
   position:relative;
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,.12),
+    inset 0 -10px 18px rgba(0,0,0,.9),
+    0 10px 22px rgba(0,0,0,.85);
+}
+
+.center{
+  position:absolute;
+  inset:70px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  background:radial-gradient(circle,#05070a,#000);
+  color:var(--neon);
+  border:1px solid rgba(0,246,255,.25);
+  font-weight:900;
 }
 
 .btn{
   position:absolute;
+  width:60px;
+  height:60px;
+  display:grid;
+  place-items:center;
   cursor:pointer;
   color:var(--neon);
+  font-weight:900;
   user-select:none;
 }
 
-#menuBtn{top:14px;left:50%;transform:translateX(-50%);}
-#prevBtn{left:18px;top:50%;transform:translateY(-50%);}
-#nextBtn{right:18px;top:50%;transform:translateY(-50%);}
-#playBtn{bottom:14px;left:50%;transform:translateX(-50%);}
-
-.center{
-  position:absolute;
-  inset:60px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:radial-gradient(circle,#39FF14,#0a2);
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-/* Menu */
-.menu{
-  position:absolute;
-  inset:20px;
-  background:#000;
-  border-radius:22px;
-  border:1px solid rgba(57,255,20,.5);
-  display:none;
-  padding:20px;
-}
-.item{padding:10px;border-bottom:1px solid #111;cursor:pointer;}
-.item:hover{background:#051;}
+.menu-btn{ top:10px; left:50%; transform:translateX(-50%); }
+.prev{ left:10px; top:50%; transform:translateY(-50%); }
+.next{ right:10px; top:50%; transform:translateY(-50%); }
+.play{ bottom:10px; left:50%; transform:translateX(-50%); }
 </style>
 </head>
 
 <body>
+<div class="stage">
+  <div class="ipod">
+    <div class="shell">
 
-<div class="ipod">
+      <div class="screen">
+        <div class="brand">2BANGUZHQ PLAYER</div>
 
-  <div class="screen">
+        <!-- ✅ ONE artwork block ONLY -->
+        <div class="album-art">
+          <img id="albumImg" src="./album-art.jpg" alt="Album Art">
+        </div>
 
-    <div class="album-art">
-      <img id="albumArt" src="" alt="Art">
+        <!-- MENU -->
+        <div class="menu" id="menu">
+          <div class="item" id="menuYoutube">📺 YouTube</div>
+          <div class="item" id="menuMerch">🛍 Merch Store</div>
+          <div class="item" id="menuBuy">💳 Buy This Song</div>
+          <div class="item" id="menuClose">❌ Close</div>
+        </div>
+
+        <div class="now">
+          <div class="title" id="title">Song 1</div>
+          <div class="artist" id="artist">2BANGUZ</div>
+        </div>
+
+        <div class="progress">
+          <div class="bar"><div class="fill" id="fill"></div></div>
+        </div>
+      </div>
+
+      <div class="wheel-area">
+        <div class="wheel">
+          <div class="btn menu-btn" id="menuBtn">MENU</div>
+          <div class="btn prev" id="prevBtn">⏮</div>
+          <div class="btn next" id="nextBtn">⏭</div>
+          <div class="btn play" id="playBtn">▶</div>
+          <div class="center" id="centerBtn">OK</div>
+        </div>
+      </div>
+
     </div>
-
-    <div class="brand">2BANGUZHQ PLAYER</div>
-    <div class="title" id="title">Loading...</div>
-    <div class="artist" id="artist"></div>
-
-    <div class="bar"><div class="fill" id="fill"></div></div>
-
   </div>
-
-  <!-- MENU -->
-  <div class="menu" id="menu">
-    <div class="item" onclick="window.open('https://youtube.com','_blank')">YouTube</div>
-    <div class="item" onclick="window.open('https://your-shopify.com','_blank')">Merch</div>
-    <div class="item" onclick="window.open('https://buy.stripe.com','_blank')">Buy Song</div>
-    <div class="item" id="menuClose">Close</div>
-  </div>
-
-  <!-- WHEEL -->
-  <div class="wheel">
-    <div class="btn" id="menuBtn">MENU</div>
-    <div class="btn" id="prevBtn">⏮</div>
-    <div class="btn" id="nextBtn">⏭</div>
-    <div class="btn" id="playBtn">▶</div>
-    <div class="center" id="centerBtn">OK</div>
-  </div>
-
 </div>
 
-<audio id="audio"></audio>
+<audio id="audio" preload="auto"></audio>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<!-- FIREBASE (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
-const firebaseConfig = {
+/* ✅ FIREBASE INIT */
+firebase.initializeApp({
   apiKey: "AIzaSyDWACkdw3uQ6HWlECvs9O81ndEcjVbEMnw",
   authDomain: "banguz-hq-ipod.firebaseapp.com",
   projectId: "banguz-hq-ipod",
-};
-firebase.initializeApp(firebaseConfig);
+});
 const db = firebase.firestore();
 
-/* Elements */
-const audio = document.getElementById("audio");
-const title = document.getElementById("title");
-const artist = document.getElementById("artist");
-const albumArt = document.getElementById("albumArt");
-const fill = document.getElementById("fill");
+/* ✅ YOUR LINKS */
+const YOUTUBE_URL = "https://www.youtube.com/@2BanguzTVBreaker";
+const MERCH_URL   = "https://2banguz-collective.myshopify.com/";
+const STRIPE_URL  = "https://buy.stripe.com/test_3cIcMYeLQ52Sb6QfNM0Fi00";
 
-const menu = document.getElementById("menu");
-const menuBtn = document.getElementById("menuBtn");
-const menuClose = document.getElementById("menuClose");
-const playBtn = document.getElementById("playBtn");
-const centerBtn = document.getElementById("centerBtn");
-
-/* LOAD SONG FROM FIREBASE */
-db.collection("tracks").orderBy("created","desc").limit(1)
-.onSnapshot(snap=>{
-  if(snap.empty) return;
-  const t = snap.docs[0].data();
-  audio.src = t.url;
-  title.innerText = t.title;
-  artist.innerText = t.artist;
-  albumArt.src = t.artwork;
-});
-
-/* PLAY */
-function togglePlay(){
-  if(!audio.src) return;
-  if(audio.paused){audio.play();}else{audio.pause();}
-}
-playBtn.onclick = togglePlay;
-centerBtn.onclick = togglePlay;
-
-/* MENU */
-menuBtn.onclick = ()=> menu.style.display="block";
-menuClose.onclick = ()=> menu.style.display="none";
-
-/* PROGRESS BAR */
-audio.ontimeupdate = ()=>{
-  if(!audio.duration) return;
-  fill.style.width = (audio.currentTime/audio.duration)*100+"%";
+/* ✅ SIMPLE TRACK (guaranteed works) */
+const TRACK = {
+  title: "Song 1",
+  artist: "2BANGUZ",
+  url: "test_mp3/song1.mp3",     // <-- make sure this file exists in that folder
+  artwork: "./album-art.jpg"    // <-- make sure this file exists
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  const menu = document.getElementById("menu");
+  const menuBtn = document.getElementById("menuBtn");
+  const menuClose = document.getElementById("menuClose");
+  const menuBuy = document.getElementById("menuBuy");
+  const menuMerch = document.getElementById("menuMerch");
+  const menuYoutube = document.getElementById("menuYoutube");
+
+  const playBtn = document.getElementById("playBtn");
+  const centerBtn = document.getElementById("centerBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  const audio = document.getElementById("audio");
+  const titleEl = document.getElementById("title");
+  const artistEl = document.getElementById("artist");
+  const fill = document.getElementById("fill");
+  const albumImg = document.getElementById("albumImg");
+
+  let menuOpen = false;
+  let playLogged = false;
+
+  // load track
+  titleEl.textContent = TRACK.title;
+  artistEl.textContent = TRACK.artist;
+  audio.src = TRACK.url;
+  albumImg.src = TRACK.artwork;
+
+  // progress bar
+  audio.addEventListener("timeupdate", () => {
+    if(audio.duration){
+      fill.style.width = (audio.currentTime / audio.duration) * 100 + "%";
+    }
+  });
+
+  audio.addEventListener("ended", () => {
+    playBtn.textContent = "▶";
+    playLogged = false; // reset for next play
+  });
+
+  async function togglePlay(){
+    if(audio.paused){
+      await audio.play();
+      playBtn.textContent = "⏸";
+
+      // ✅ log play ONCE per play session
+      if(!playLogged){
+        playLogged = true;
+        db.collection("plays").add({
+          song: TRACK.title,
+          artist: TRACK.artist,
+          src: TRACK.url,
+          playedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(console.error);
+      }
+    }else{
+      audio.pause();
+      playBtn.textContent = "▶";
+    }
+  }
+
+  // buttons
+  playBtn.onclick = togglePlay;
+  centerBtn.onclick = togglePlay;
+
+  prevBtn.onclick = () => { audio.currentTime = 0; };
+  nextBtn.onclick = async () => { audio.currentTime = 0; await audio.play(); playBtn.textContent = "⏸"; };
+
+  // menu open/close
+  menuBtn.onclick = () => {
+    menuOpen = !menuOpen;
+    menu.style.display = menuOpen ? "block" : "none";
+  };
+  menuClose.onclick = () => {
+    menuOpen = false;
+    menu.style.display = "none";
+  };
+
+  // menu links
+  menuYoutube.onclick = () => window.open(YOUTUBE_URL, "_blank");
+  menuMerch.onclick = () => window.open(MERCH_URL, "_blank");
+  menuBuy.onclick = () => window.open(STRIPE_URL, "_blank");
+});
 </script>
 
 </body>
