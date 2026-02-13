@@ -359,13 +359,13 @@ const db = firebase.firestore();
 document.addEventListener("DOMContentLoaded", () => {
 
   const menu = document.getElementById("menu");
-  const menuBtn = document.getElementById("menuBtn");
   const menuClose = document.getElementById("menuClose");
-
-  const menuBuy = document.getElementById("menuBuy");
-  const menuMerch = document.getElementById("menuMerch");
   const menuYoutube = document.getElementById("menuYoutube");
+  const menuMerch = document.getElementById("menuMerch");
+  const menuBuy = document.getElementById("menuBuy");
 
+  let menuOpen = false;
+  
   const playBtn = document.getElementById("playBtn");
   const centerBtn = document.getElementById("centerBtn");
   const prevBtn = document.getElementById("prevBtn");
@@ -441,28 +441,34 @@ document.addEventListener("DOMContentLoaded", () => {
     audio.play();
   };
 
-  /* ✅ MENU WORKS */
-  menuBtn.onclick = () => {
+  // MENU TOGGLE
+  document.querySelector(".menu").onclick = () => {
     menuOpen = !menuOpen;
     menu.style.display = menuOpen ? "block" : "none";
   };
 
+  // CLOSE MENU
   menuClose.onclick = () => {
     menu.style.display = "none";
     menuOpen = false;
   };
 
-  /* ✅ LINKS WORK */
-  menuMerch.onclick = () =>
+  // MERCH
+  menuMerch.onclick = () => {
     window.open("https://2banguz-collective.myshopify.com/", "_blank");
+  };
 
- menuYoutube.onclick = () => {
-  window.open("https://youtu.be/i5wZ2mHfrhA", "_blank");
-};
-  
-    menuBuy.onclick = () => {
-  window.open("https://buy.stripe.com/test_3cIcMNeLQ52Sb6QFNM0Fi00", "_blank");
-};
+  // YOUTUBE
+  menuYoutube.onclick = () => {
+    window.open("https://youtu.be/i5wZ2mHfrhA", "_blank");
+  };
+
+  // BUY SONG
+  menuBuy.onclick = () => {
+    window.open("https://buy.stripe.com/test_3cIcMNeLQ52Sb6QFNM0Fi00", "_blank");
+  };
+
+});
 </script>
 
 </body>
