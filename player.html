@@ -182,23 +182,26 @@ body{
 
 /* MENU */
 .menu{
-  display:none;
-  background:#020402;
-  border:1px solid rgba(57,255,20,.25);
+  background:#000;
   border-radius:12px;
   overflow:hidden;
+  margin-top:8px;
+  border:1px solid rgba(57,255,20,.25);
 }
 
-.item{
-  padding:10px;
-  cursor:pointer;
-  border-bottom:1px solid rgba(57,255,20,.15);
-  font-size:13px;
+/* FORCE SMALL MENU ITEMS */
+.menu .item{
+  padding:5px 6px;
+  font-size:10px;
+  line-height:1.2;
+  border-bottom:1px solid rgba(57,255,20,.12);
 }
 
-.item:hover{
-  background:rgba(57,255,20,.15);
+/* Remove extra spacing */
+.menu .item:last-child{
+  border-bottom:none;
 }
+
 
 /* NOW PLAYING */
 .now{
