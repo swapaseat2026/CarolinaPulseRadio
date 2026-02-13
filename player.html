@@ -384,36 +384,37 @@ const titleEl  = document.getElementById("title");
 const artistEl = document.getElementById("artist");
 const artImg   = document.querySelector(".album-art img");
 
-/* ================= LOAD SONG ================= */
-async function loadSong() {
-  try {
-    const snap = await db.collection("tracks")
-      .orderBy("created", "desc")
-      .limit(1)
-      .get();
+/* ================= AUTO LIVE LOAD FROM FIREBASE ================= */
 
-    if (snap.empty) {
-      titleEl.innerText = "No Song Found";
-      artistEl.innerText = "";
-      return;
+db.collection("tracks")
+  .orderBy("created", "desc")
+  .limit(1)
+  .onSnapshot((snapshot) => {
+
+    if (snapshot.empty) return;
+
+    const track = snapshot.docs[0].data();
+
+    console.log("AUTO LOADED:", track.title);
+
+    /* SET AUDIO */
+    audio.src = track.url;
+
+    /* SET ARTWORK */
+    if (track.artwork) {
+      document.querySelector(".album-art img").src = track.artwork;
     }
 
-    const track = snap.docs[0].data();
+    /* SET TITLE + ARTIST */
+    document.getElementById("title").innerText =
+      track.title || track.song || "Unknown";
 
-    audio.src = track.url;
-    artImg.src = track.artwork || "./logo.png";
+    document.getElementById("artist").innerText =
+      track.artist || "2BANGUZ";
 
-    titleEl.innerText  = track.title || track.song || "Unknown";
-    artistEl.innerText = track.artist || "2BANGUZ";
-
-  } catch (err) {
-    console.error("LOAD ERROR:", err);
-    titleEl.innerText = "Load Error";
-    artistEl.innerText = "Check Firebase";
-  }
-}
-
-loadSong();
+    /* AUTO PLAY (optional — remove if you don’t want auto play) */
+    audio.play().catch(()=>{});
+});
 
 /* ================= PLAY / PAUSE ================= */
 function togglePlay() {
