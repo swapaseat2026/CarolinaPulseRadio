@@ -357,7 +357,7 @@ body{
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-/* ✅ FIREBASE INIT */
+/* ================= FIREBASE INIT ================= */
 firebase.initializeApp({
   apiKey: "AIzaSyDWACkdw3uQ6HWlECvs9O81ndEcjVbEMnw",
   authDomain: "banguz-hq-ipod.firebaseapp.com",
@@ -366,75 +366,98 @@ firebase.initializeApp({
 
 const db = firebase.firestore();
 
-// ===== AUDIO PLAYER =====
+/* ================= ELEMENTS ================= */
 const audio = document.getElementById("audio");
 
-// Buttons
-const playBtn = document.querySelector(".play");
-const nextBtn = document.querySelector(".next");
-const prevBtn = document.querySelector(".prev");
-const okBtn   = document.querySelector(".center");
+const playBtn  = document.getElementById("playBtn");
+const nextBtn  = document.getElementById("nextBtn");
+const prevBtn  = document.getElementById("prevBtn");
+const okBtn    = document.getElementById("centerBtn");
+const menuBtn  = document.getElementById("menuBtn");
 
-// ===== LOAD SONG FROM FIREBASE =====
-const db = firebase.firestore();
+const menu     = document.getElementById("menu");
+const menuClose= document.getElementById("menuClose");
 
-db.collection("tracks")
-  .orderBy("created", "desc")
-  .limit(1)
-  .get()
-  .then((snap) => {
-    if (snap.empty) return;
+const fill     = document.getElementById("fill");
+
+const titleEl  = document.getElementById("title");
+const artistEl = document.getElementById("artist");
+const artImg   = document.querySelector(".album-art img");
+
+/* ================= LOAD SONG ================= */
+async function loadSong() {
+  try {
+    const snap = await db.collection("tracks")
+      .orderBy("created", "desc")
+      .limit(1)
+      .get();
+
+    if (snap.empty) {
+      titleEl.innerText = "No Song Found";
+      artistEl.innerText = "";
+      return;
+    }
 
     const track = snap.docs[0].data();
 
-    // Set audio source
     audio.src = track.url;
+    artImg.src = track.artwork || "./logo.png";
 
-    // Set artwork
-    const albumArt = document.querySelector(".album-art img");
-    if (albumArt) albumArt.src = track.artwork;
+    titleEl.innerText  = track.title || track.song || "Unknown";
+    artistEl.innerText = track.artist || "2BANGUZ";
 
-    // Set title + artist
-    const title = document.querySelector(".title");
-    const artist = document.querySelector(".artist");
+  } catch (err) {
+    console.error("LOAD ERROR:", err);
+    titleEl.innerText = "Load Error";
+    artistEl.innerText = "Check Firebase";
+  }
+}
 
-    if (title) title.innerText = track.title || track.song;
-    if (artist) artist.innerText = track.artist || "2BANGUZ";
-  });
+loadSong();
 
+/* ================= PLAY / PAUSE ================= */
+function togglePlay() {
+  if (!audio.src) return;
 
-// ===== BUTTON ACTIONS =====
-
-// PLAY / PAUSE
-playBtn.onclick = () => {
   if (audio.paused) {
     audio.play();
   } else {
     audio.pause();
   }
-};
+}
 
-// OK BUTTON = PLAY TOO
-okBtn.onclick = () => {
-  if (audio.paused) {
-    audio.play();
-  } else {
-    audio.pause();
-  }
-};
+playBtn.onclick = togglePlay;
+okBtn.onclick   = togglePlay;
 
-// REWIND
-prevBtn.onclick = () => {
-  audio.currentTime -= 5;
-};
-
-// FORWARD
+/* ================= SEEK ================= */
 nextBtn.onclick = () => {
   audio.currentTime += 5;
 };
 
+prevBtn.onclick = () => {
+  audio.currentTime -= 5;
+};
 
+/* ================= MENU ================= */
+menuBtn.onclick = () => {
+  menu.style.display = "block";
+};
+
+menuClose.onclick = () => {
+  menu.style.display = "none";
+};
+
+/* ================= PROGRESS BAR ================= */
+audio.addEventListener("timeupdate", () => {
+  if (!audio.duration) return;
+  const percent = (audio.currentTime / audio.duration) * 100;
+  fill.style.width = percent + "%";
+});
+
+/* ================= AUTO PLAY WHEN LOADED ================= */
+audio.addEventListener("canplay", () => {
+  console.log("Song Ready");
+});
 </script>
-
 </body>
 </html>
