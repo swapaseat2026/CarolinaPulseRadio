@@ -460,39 +460,6 @@ audio.addEventListener("timeupdate", () => {
 audio.addEventListener("canplay", () => {
   console.log("Song Ready");
 });
-  /* ===== MENU BUTTON LINKS ===== */
-
-const menuYoutube = document.getElementById("menuYoutube");
-const menuMerch   = document.getElementById("menuMerch");
-const menuBuy     = document.getElementById("menuBuy");
-const menuClose   = document.getElementById("menuClose");
-const menuBox     = document.getElementById("menu");
-const menuBtn     = document.getElementById("menuBtn");
-
-/* OPEN MENU */
-menuBtn.onclick = () => {
-  menuBox.style.display = "block";
-};
-
-/* CLOSE MENU */
-menuClose.onclick = () => {
-  menuBox.style.display = "none";
-};
-
-/* YOUTUBE */
-menuYoutube.onclick = () => {
-  window.open("https://youtu.be/i5wZ2mHfrhA", "_blank");
-};
-
-/* MERCH STORE */
-menuMerch.onclick = () => {
-  window.open("https://2banguz-collective.myshopify.com/", "_blank");
-};
-
-/* BUY SONG (STRIPE) */
-menuBuy.onclick = () => {
-  window.open("https://buy.stripe.com/test_3cIcMvELQ52Sb6QFNMOFj00", "_blank");
-};
 
 </script>
 </body>
