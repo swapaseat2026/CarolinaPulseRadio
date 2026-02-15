@@ -1,100 +1,427 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>2BANGUZHQ Player</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style>
 :root{
-  --neon:#39FF14;
+  --black:#000;
+  --dark:#020402;
+  --neon:#39FF14; /* LIME */
+  --blue:#39FF14; /* keep same green */
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,Arial;}
+*{ margin:0; padding:0; box-sizing:border-box; font-family:system-ui, Arial, sans-serif; }
 
 body{
   min-height:100vh;
   display:grid;
   place-items:center;
-  background:linear-gradient(180deg,#020402,#000);
+  background:
+    radial-gradient(circle at top, rgba(57,255,20,.22), transparent 60%),
+    radial-gradient(circle at bottom, rgba(57,255,20,.12), transparent 60%),
+    linear-gradient(180deg,#020402,#000);
   color:#fff;
 }
 
-/* ===== IPOD ===== */
+/* ===== STAGE ===== */
+.stage{ perspective:1200px; }
+
+/* ===== IPOD BODY ===== */
 .ipod{
   width:320px;
   height:560px;
   border-radius:42px;
   position:relative;
-  background:#000;
-  box-shadow:0 0 40px rgba(57,255,20,.3);
+  overflow:visible;
+  text-align:center;
+  background:linear-gradient(160deg,#111827 0%, #05070a 45%, #000 100%);
+  box-shadow:
+    inset 0 10px 18px rgba(255,255,255,.08),
+    inset 0 -25px 40px rgba(0,0,0,.95),
+    0 35px 90px rgba(0,0,0,.85),
+    0 0 45px rgba(57,255,20,.25);
+  transition:transform .4s ease;
+}
+.ipod:hover{ transform:perspective(900px) rotateX(5deg) rotateY(-6deg); }
+
+/* front gloss */
+.ipod::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:42px;
+  pointer-events:none;
+  background:linear-gradient(120deg, rgba(255,255,255,.14), transparent 70%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.08),
+    inset 0 0 25px rgba(57,255,20,.15);
+}
+
+/* side thickness */
+.ipod::after{
+  content:"";
+  position:absolute;
+  top:12px;
+  right:-24px;
+  width:24px;
+  height:calc(100% - 24px);
+  background:linear-gradient(180deg, rgba(255,255,255,.20), rgba(0,0,0,.90));
+  border-radius:0 32px 32px 0;
+  box-shadow:
+    inset -4px 0 8px rgba(0,0,0,.9),
+    8px 0 18px rgba(0,0,0,.55);
+  pointer-events:none;
+}
+
+/* inner shell */
+.shell{
+  position:absolute;
+  inset:0;
+  border-radius:42px;
+  background:linear-gradient(180deg,#050905,#020402);
+  border:1px solid rgba(57,255,20,.25);
+  box-shadow:
+    inset 0 0 30px rgba(57,255,20,.18),
+    0 30px 70px rgba(0,0,0,.9);
 }
 
 /* ===== SCREEN ===== */
 .screen{
   position:absolute;
-  top:20px;
+  top:22px;
   left:20px;
   right:20px;
   height:280px;
-  border-radius:24px;
-  padding:15px;
-  border:1px solid rgba(57,255,20,.3);
+  border-radius:34px;
+  padding:16px;
+  background:linear-gradient(180deg,#050905,#020402);
+  border:1px solid rgba(57,255,20,.25);
+  box-shadow:
+    inset 0 0 25px rgba(57,255,20,.12),
+    inset 0 -10px 18px rgba(0,0,0,.85);
+  overflow:hidden;
 }
 
-/* Album Art */
+/* inner bezel */
+.screen::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.05);
+  pointer-events:none;
+}
+
+/* album art */
 .album-art{
   display:flex;
   justify-content:center;
-  margin-bottom:10px;
+  margin:12px 0;
 }
 .album-art img{
   width:140px;
   height:140px;
-  border-radius:12px;
   object-fit:cover;
+  border-radius:14px;
+  box-shadow:0 0 18px rgba(57,255,20,.20);
 }
 
-/* Text */
-.brand{font-weight:900;color:var(--neon);text-align:center;}
-.title{font-weight:900;color:var(--neon);text-align:center;margin-top:8px;}
-.artist{text-align:center;font-size:13px;opacity:.8}
+/* text */
+.brand{
+  text-align:center;
+  font-weight:900;
+  color:var(--blue);
+  margin-bottom:10px;
+}
+.now{ margin-top:12px; }
+.title{
+  font-weight:900;
+  color:var(--neon);
+}
+.artist{
+  opacity:.8;
+  font-size:13px;
+}
 
-/* Progress */
+/* progress */
+.progress{ margin-top:10px; }
 .bar{
   height:8px;
   border-radius:999px;
   border:1px solid rgba(57,255,20,.3);
   overflow:hidden;
-  margin-top:10px;
 }
 .fill{
   height:100%;
   width:0%;
-  background:var(--neon);
+  background:linear-gradient(90deg,var(--neon),#7CFF6B);
 }
 
-/* MENU */
+/* ===== MENU OVERLAY ===== */
 .menu{
   position:absolute;
-  top:50%;
+  top:55%;
   left:50%;
-  transform:translate(-50%,-50%);
+  transform:translate(-50%, -50%);
   width:75%;
-  background:#000;
-  border:1px solid var(--neon);
-  border-radius:12px;
+  background:rgba(0,0,0,.95);
+  border:1px solid rgba(57,255,20,.45);
+  border-radius:14px;
+  padding:8px;
   display:none;
-  z-index:999;
+  z-index:9999;              /* ALWAYS above wheel */
+  box-shadow:0 0 20px rgba(57,255,20,.35);
+  backdrop-filter:blur(4px);
 }
 .item{
-  padding:10px;
-  text-align:center;
-  border-bottom:1px solid rgba(57,255,20,.2);
+  padding:8px;               /* smaller */
   cursor:pointer;
-  font-size:13px;
+  border-bottom:1px solid rgba(57,255,20,.12);
+  font-size:12px;            /* smaller */
+  text-align:center;
+  user-select:none;
 }
-.item:last-child{border:none;}
-.item:hover{background:rgba(57,255,20,.1);}
+.item:last-child{ border-bottom:none; }
+.item:hover{ background:rgba(57,255,20,.08); }
 
+/* ===== CLICK WHEEL ===== */
+.wheel-area{
+  position:absolute;
+  bottom:30px;
+  left:0;
+  right:0;
+  display:flex;
+  justify-content:center;
+  z-index:10;
+}
+.wheel{
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  background:linear-gradient(180deg,#050905,#020402);
+  border:1px solid rgba(57,255,20,.25);
+  position:relative;
+  box-shadow: inset 0 0 25px rgba(57,255,20,.12);
+}
+.center{
+  position:absolute;
+  inset:70px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  background:linear-gradient(180deg,var(--neon),#0a120a);
+  color:#000;
+  font-weight:900;
+  user-select:none;
+}
+.btn{
+  position:absolute;
+  width:60px;
+  height:60px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  color:var(--neon);
+  font-weight:900;
+  user-select:none;
+}
+.menu-btn{ top:10px; left:50%; transform:translateX(-50%); }
+.prev{ left:10px; top:50%; transform:translateY(-50%); }
+.next{ right:10px; top:50%; transform:translateY(-50%); }
+.play{ bottom:10px; left:50%; transform:translateX(-50%); }
+</style>
+</head>
+
+<body>
+<div class="stage">
+  <div class="ipod">
+    <div class="shell">
+
+      <!-- SCREEN -->
+      <div class="screen">
+        <div class="album-art">
+          <!-- fallback image if firestore hasn't loaded yet -->
+          <img id="albumArt" src="./logo.png" alt="Album Art">
+        </div>
+
+        <div class="brand">2BANGUZHQ PLAYER</div>
+
+        <!-- MENU -->
+        <div class="menu" id="menu">
+          <div class="item" id="menuYoutube">📺 YouTube</div>
+          <div class="item" id="menuMerch">🛍 Merch Store</div>
+          <div class="item" id="menuBuy">💳 Buy This Song</div>
+          <div class="item" id="menuClose">❌ Close</div>
+        </div>
+
+        <!-- NOW PLAYING -->
+        <div class="now">
+          <div class="title" id="title">Loading…</div>
+          <div class="artist" id="artist">Please wait</div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="progress">
+          <div class="bar"><div class="fill" id="fill"></div></div>
+        </div>
+      </div>
+
+      <!-- CLICK WHEEL -->
+      <div class="wheel-area">
+        <div class="wheel">
+          <div class="btn menu-btn" id="menuBtn">MENU</div>
+          <div class="btn prev" id="prevBtn">⏮</div>
+          <div class="btn next" id="nextBtn">⏭</div>
+          <div class="btn play" id="playBtn">▶</div>
+          <div class="center" id="centerBtn">OK</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<audio id="audio" preload="auto"></audio>
+
+<!-- FIREBASE (compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+/* ===================== FIREBASE INIT ===================== */
+firebase.initializeApp({
+  apiKey: "AIzaSyDWACkdw3uQ6HWlECvs9O81ndEcjVbEMnw",
+  authDomain: "banguz-hq-ipod.firebaseapp.com",
+  projectId: "banguz-hq-ipod",
+});
+
+const db = firebase.firestore();
+
+/* ===================== ELEMENTS ===================== */
+const audio    = document.getElementById("audio");
+const titleEl  = document.getElementById("title");
+const artistEl = document.getElementById("artist");
+const fillEl   = document.getElementById("fill");
+const albumArt = document.getElementById("albumArt");
+
+/* Buttons */
+const playBtn   = document.getElementById("playBtn");
+const nextBtn   = document.getElementById("nextBtn");
+const prevBtn   = document.getElementById("prevBtn");
+const centerBtn = document.getElementById("centerBtn");
+const menuBtn   = document.getElementById("menuBtn");
+
+/* Menu */
+const menuBox   = document.getElementById("menu");
+const menuYoutube = document.getElementById("menuYoutube");
+const menuMerch   = document.getElementById("menuMerch");
+const menuBuy     = document.getElementById("menuBuy");
+const menuClose   = document.getElementById("menuClose");
+
+/* ===================== MENU OPEN/CLOSE ===================== */
+let menuOpen = false;
+
+menuBtn.onclick = () => {
+  menuOpen = !menuOpen;
+  menuBox.style.display = menuOpen ? "block" : "none";
+};
+
+menuClose.onclick = () => {
+  menuOpen = false;
+  menuBox.style.display = "none";
+};
+
+/* ===================== MENU LINKS (WORKING) ===================== */
+menuYoutube.onclick = () => {
+  window.open("https://youtu.be/i5wZ2mHfrhA", "_blank", "noopener,noreferrer");
+};
+
+menuMerch.onclick = () => {
+  // ALWAYS open Shopify in a NEW tab
+  window.open("https://2banguz-collective.myshopify.com/", "_blank", "noopener,noreferrer");
+};
+
+menuBuy.onclick = () => {
+  // Open Stripe Payment Link (redirect behavior is set inside Stripe dashboard)
+  window.open("https://buy.stripe.com/7sY7sF0uWcmaduh8EX9R600", "_blank", "noopener,noreferrer");
+};
+
+/* ===================== LOAD LATEST TRACK (AUTO) ===================== */
 /*
+Firestore expected fields in tracks:
+- title (or song)
+- artist
+- url (mp3)
+- artwork (image url)
+- created (timestamp or number)
+*/
+
+function applyTrack(track){
+  const t = track.title || track.song || "Untitled";
+  const a = track.artist || "2BANGUZ";
+  const u = track.url || "";
+  const art = track.artwork || "";
+
+  titleEl.textContent = t;
+  artistEl.textContent = a;
+
+  if (art) albumArt.src = art;
+
+  if (u && audio.src !== u) {
+    audio.src = u;
+    audio.load();
+    // do NOT auto-play unless you want it:
+    // audio.play().catch(()=>{});
+  }
+}
+
+// Live listener: always the newest
+db.collection("tracks")
+  .orderBy("created", "desc")
+  .limit(1)
+  .onSnapshot((snap) => {
+    if (snap.empty) return;
+    applyTrack(snap.docs[0].data());
+  });
+
+/* ===================== AUDIO / PROGRESS ===================== */
+audio.addEventListener("timeupdate", () => {
+  if (!audio.duration) return;
+  const pct = (audio.currentTime / audio.duration) * 100;
+  fillEl.style.width = pct + "%";
+});
+
+audio.addEventListener("ended", () => {
+  // reset play icon when done
+  playBtn.textContent = "▶";
+});
+
+/* ===================== BUTTON ACTIONS ===================== */
+function togglePlay(){
+  if (!audio.src) return;
+
+  if (audio.paused) {
+    audio.play().then(() => {
+      playBtn.textContent = "⏸";
+    }).catch(() => {
+      // If autoplay is blocked, user can click again.
+    });
+  } else {
+    audio.pause();
+    playBtn.textContent = "▶";
+  }
+}
+
+playBtn.onclick = togglePlay;
+centerBtn.onclick = togglePlay;
+
+// Seek (simple + reliable)
+prevBtn.onclick = () => { audio.currentTime = Math.max(0, audio.currentTime - 10); };
+nextBtn.onclick = () => { audio.currentTime = Math.min(audio.duration || 999999, audio.currentTime + 10); };
+</script>
+</body>
+</html>
